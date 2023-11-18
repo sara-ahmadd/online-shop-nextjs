@@ -3,11 +3,20 @@ import React from "react";
 
 export default function Intro() {
   return (
-    <div className="flex flex-col justify-center gap-4 items-center h-fit w-full py-5">
-      <h1>Hello in online_shop</h1>
-      <Link className="btn btn-outline btn-accent" href={"/products"}>
-        products
-      </Link>
+    <div className="flex flex-col justify-center gap-4 items-center min-h-screen w-full py-5">
+      <div className="grid w-11/12">
+        {[1, 2, 3, 4].map((i) => {
+          return <div key={i} className={`img img${i}`}></div>;
+        })}
+        <div className="img5 flex justify-center items-center">
+          <Link id="buttn" className="btn btn-accent" href={"/products"}>
+            products
+          </Link>
+        </div>
+        {[6, 7].map((i) => {
+          return <div key={i} className={`img img${i}`}></div>;
+        })}
+      </div>
     </div>
   );
 }

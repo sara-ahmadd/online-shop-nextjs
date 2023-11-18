@@ -1,26 +1,26 @@
 "use client";
 import { ProductType } from "@/types";
 import Image from "next/image";
-import React, { useContext } from "react";
 import Link from "next/link";
-import { themeContext } from "../context/Theme";
+import React, { useContext } from "react";
+import { themeContext } from "./../context/Theme";
 import { FaCartPlus } from "react-icons/fa";
 
-export default function ProductCard({ product }: { product: ProductType }) {
+export default function ProductDetails({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
   return (
     <div
-      className={`card w-72 bg-base-100 shadow-xl hover:scale-105 transition-all ${
+      className={`card w-11/12 lg:card-side bg-base-100 shadow-xl ${
         theme ? "text-black" : undefined
-      } card-animation`}
+      }`}
     >
       <Link href={"/products/productId"}>
         <figure className="card-flash">
           <Image
             src={product.image}
             alt={product.title}
-            width={300}
-            height={100}
+            width={350}
+            height={70}
             className="rounded"
           />
         </figure>
@@ -32,6 +32,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
             <div className="badge badge-secondary">NEW</div>
           ) : null}
         </h2>
+        <p>{product.description}</p>
         <div className="flex justify-between items-center">
           <p className="font-bold text-xl">${product.price}</p>
           <FaCartPlus className="font-bold text-2xl" />

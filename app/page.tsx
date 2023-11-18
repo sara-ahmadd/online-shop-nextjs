@@ -5,7 +5,7 @@ import Footer from "./components/Footer";
 
 export default function Home() {
   return (
-    <main className="page min-h-screen min-w-screen flex flex-col justify-between items-center">
+    <main className="page w-fit flex flex-col justify-between items-center min-h-screen">
       <Intro />
       <Feedback />
       <Footer />
