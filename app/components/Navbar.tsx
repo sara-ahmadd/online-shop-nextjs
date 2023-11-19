@@ -12,7 +12,7 @@ export default function Navbar() {
   return (
     <nav
       className={`flex flex-col items-center justify-start gap-5 p-2 min-w-fit h-screen fixed bg-gradient-to-b from-teal-500/60 to-teal-300/40  
-      t-0 l-0 z-50 ${theme && "text-black"}`}
+      t-0 l-0 z-50 ${theme ? "text-white" : "text-black"}`}
     >
       <h1 className="h-14">
         <Link href={"/"}>Logo</Link>
@@ -57,7 +57,7 @@ export default function Navbar() {
           </Link>
         </li>
         <li>
-          <div className="dropdown">
+          <div className={`dropdown  ${theme ? "text-black" : undefined}`}>
             <label tabIndex={0} className="btn m-1">
               <FaUser />
             </label>

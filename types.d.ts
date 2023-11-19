@@ -5,5 +5,5 @@ export type ProductType = {
   image: string;
   price: number;
   description: string;
-  new?: boolean | string;
+  newProduct?: boolean | string;
 };

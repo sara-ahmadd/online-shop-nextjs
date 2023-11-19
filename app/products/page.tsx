@@ -77,7 +77,7 @@ export default function ProductsPage() {
     },
   ];
   return (
-    <div className="container mx-auto flex items-center justify-between p-5">
+    <div className="page mx-auto flex items-center justify-between p-5">
       <ProductsList products={prods} />
     </div>
   );

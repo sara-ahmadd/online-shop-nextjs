@@ -14,7 +14,7 @@ export default function FeedbackForm() {
   const { theme } = useContext(themeContext);
 
   return (
-    <form className="w-full flex flex-col justify-center items-start py-5">
+    <form className="w-full flex flex-col justify-center items-start py-5 pr-3">
       <label htmlFor="email">Email</label>
       <input
         type="email"
