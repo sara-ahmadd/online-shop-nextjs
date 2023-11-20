@@ -2,18 +2,16 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { useContext, useEffect, useState } from "react";
-import ThemeProvider, { themeContext }  from "./context/Theme.tsx";
+import ThemeProvider, { themeContext } from "./context/Theme";
 import Navbar from "./components/Navbar";
 import Parent from "./components/Parent";
 import ThemeBtn from "./components/ThemeBtn";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Online Shop",
   description: "Enjoy Shopping!!",
 };
-
+export const revalidate = 0;
 export default function RootLayout({
   children,
 }: {
@@ -24,7 +22,7 @@ export default function RootLayout({
       <ThemeProvider>
         <body>
           <Parent>
-            <Navbar/>
+            <Navbar />
             {children}
           </Parent>
         </body>

@@ -4,15 +4,12 @@ import Link from "next/link";
 import { updateProduct } from "@/lib/updateProduct";
 import { ParamsType, ProductType } from "@/types";
 import { getProduct } from "@/lib/getProduct";
-export default async function EditProduct({
-  params: { productId },
-}: ParamsType) {
-  const prodInfo = async (id: string): Promise<ProductType> => {
-    const data: Promise<ProductType> = await getProduct(id);
-    const p: ProductType = await data;
-    return p;
-  };
-  const initProduct = await prodInfo(productId);
+import { connectdb } from "@/database/mongodb";
+import Product from "@/models/product";
+export default async function EditProduct({ params }: ParamsType) {
+  const { productId } = params;
+  await connectdb();
+  const initProduct = await Product.findById(productId);
 
   const editAProduct = async (product: ProductType): Promise<ProductType> => {
     "use server";

@@ -9,7 +9,7 @@ export const updateProduct = async (inputData: ProductType) => {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-      body: JSON.stringify(inputData),
+      body: JSON.stringify({ ...inputData, _id: inputData._id }),
     });
     const data = await res.json();
     return data;

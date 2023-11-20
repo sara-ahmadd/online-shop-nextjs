@@ -1,15 +1,14 @@
 const url = "http://localhost:3000/api/products";
 export const getProduct = async (id: string) => {
   try {
-    const res = await fetch(`${url}?id=${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      cache: "no-store",
-    });
+    const res = await fetch(`${url}?id=${id}`);
+    if (!res.ok) {
+      throw new Error("Error in response!");
+    }
     const data = await res.json();
+    if (!data) {
+      throw new Error("Error in data!");
+    }
     return data;
   } catch (error) {
     throw new Error(
