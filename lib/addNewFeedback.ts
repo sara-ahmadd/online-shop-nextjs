@@ -1,7 +1,7 @@
-import { ProductType } from "@/types";
+import { FeedType } from "@/types";
 
 const url = "http://localhost:3000/api/feedbacks";
-export const addNewFeedback = async (inputData: ProductType) => {
+export const addNewFeedback = async (inputData: FeedType) => {
   try {
     const res = await fetch(url, {
       method: "POST",

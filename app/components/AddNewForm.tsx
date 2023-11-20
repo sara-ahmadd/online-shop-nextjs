@@ -2,20 +2,32 @@
 import React, { useState, FormEvent, useContext, ChangeEvent } from "react";
 import { themeContext } from "./../context/Theme";
 import { ProductType } from "@/types";
-
-export default function FeedbackForm({
+import { useRouter } from "next/navigation";
+const emptyForm = {
+  title: "",
+  category: "",
+  image: "",
+  price: 0,
+  description: "",
+  newProduct: false,
+};
+export default function AddProductForm({
   initialForm,
+  functionality,
 }: {
   initialForm: ProductType;
+  functionality: (f: ProductType) => Promise<ProductType>;
 }) {
+  const router = useRouter();
   const [form, setForm] = useState(initialForm);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.id]: e.target.value });
   };
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    console.log(form);
-    setForm(initialForm);
+    functionality(form);
+    setForm(emptyForm);
+    router.refresh();
   };
   const { theme } = useContext(themeContext);
 
@@ -57,13 +69,17 @@ export default function FeedbackForm({
         className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
         onChange={handleChange}
       />
-      <label htmlFor="new">New</label>
+      <label htmlFor="newProduct">New</label>
       <input
         type="checkbox"
-        id="new"
-        name="new"
+        id="newProduct"
+        name="newProduct"
         className={`${theme && "text-black"} p-4 border rounded w-fit mb-3`}
-        onChange={handleChange}
+        onChange={(e) =>
+          e.target.checked
+            ? setForm({ ...form, newProduct: true })
+            : setForm({ ...form, newProduct: false })
+        }
       />
       <label htmlFor="price">Price</label>
       <input

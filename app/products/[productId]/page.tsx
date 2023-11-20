@@ -1,24 +1,25 @@
 import ProductDetails from "@/app/components/ProductDetails";
+import { getProducts } from "@/lib/getAllProducts";
+import { getProduct } from "@/lib/getProduct";
+import { ParamsType, ProductType } from "@/types";
 import Link from "next/link";
 import React from "react";
 
-export default function ProductPage() {
-  const product = {
-    id: "334356",
-    title: "jacket",
-    category: "clothes",
-    image:
-      "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8Y2xvdGhlc3xlbnwwfHwwfHx8MA%3D%3D",
-    price: 0,
-    description: "jdsrfgh cvnjjdijg kf",
-    new: true,
-  };
+export default async function ProductPage({
+  params: { productId },
+}: ParamsType) {
+  const data = await getProduct(productId);
+  const product = await data;
   return (
     <div className="page w-96 h-screen flex flex-col items-center justify-center gap-3">
-      <Link href={"/products"} className="btn btn-accent btn-outline">
-        Products
-      </Link>
       <ProductDetails product={product} />
     </div>
   );
 }
+export const generateStaticParams = async () => {
+  const res: Promise<ProductType[]> = await getProducts();
+  const prods: ProductType[] = await res;
+  return prods.map((p) => ({
+    productId: p._id,
+  }));
+};

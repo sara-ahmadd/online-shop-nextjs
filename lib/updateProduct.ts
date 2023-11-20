@@ -3,7 +3,7 @@ import { ProductType } from "@/types";
 const url = "http://localhost:3000/api/products";
 export const updateProduct = async (inputData: ProductType) => {
   try {
-    const res = await fetch(`${url}?id=${inputData.id}`, {
+    const res = await fetch(`${url}?id=${inputData._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -14,6 +14,6 @@ export const updateProduct = async (inputData: ProductType) => {
     const data = await res.json();
     return data;
   } catch (error) {
-    throw new Error(`Error in adding new product to the url (${url}).`);
+    throw new Error(`Error in editing the product => (${url}).`);
   }
 };

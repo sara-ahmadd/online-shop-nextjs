@@ -179,8 +179,8 @@
 .img:hover::after,
 .card-flash:hover::after {
   display: block;
-  animation: flash 0.5s 0.1s linear forwards;
-  -webkit-animation: flash 0.5s 0.1s linear forwards;
+  animation: flash 0.3s 0.2s linear forwards;
+  -webkit-animation: flash 0.3s 0.2s linear forwards;
 }
 
 @media (max-width: 428px) {

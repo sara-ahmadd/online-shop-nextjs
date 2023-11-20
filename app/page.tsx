@@ -3,6 +3,7 @@ import Intro from "./components/Intro";
 import Feedback from "./components/Feedback";
 import Footer from "./components/Footer";
 
+export const revalidate = 0;
 export default function Home() {
   return (
     <main className="page w-screen flex flex-col justify-between items-center min-h-screen">

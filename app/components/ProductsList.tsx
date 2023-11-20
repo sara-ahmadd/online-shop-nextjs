@@ -1,5 +1,4 @@
 import { ProductType } from "@/types";
-import Image from "next/image";
 import React from "react";
 import ProductCard from "./ProductCard";
 
@@ -9,10 +8,12 @@ export default function ProductsList({
   products: ProductType[];
 }) {
   return (
-    <div className="flex flex-wrap justify-center gap-5 items-center w-full">
-      {products?.map((p) => (
-        <ProductCard key={p.id} product={p} />
-      ))}
+    <div className="flex flex-wrap justify-center gap-5 items-stretch w-full">
+      {products?.length > 0 ? (
+        products.map((p) => <ProductCard key={p._id} product={p} />)
+      ) : (
+        <h1 className="font-bold text-4xl italic">No Products to display!</h1>
+      )}
     </div>
   );
 }

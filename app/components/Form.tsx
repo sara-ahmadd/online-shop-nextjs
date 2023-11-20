@@ -1,20 +1,37 @@
 "use client";
 import React, { useState, FormEvent, useContext, ChangeEvent } from "react";
 import { themeContext } from "./../context/Theme";
+import { useRouter } from "next/navigation";
+import { addNewFeedback } from "@/lib/addNewFeedback";
+
+const initialForm = {
+  email: "",
+  msg: "",
+};
 
 export default function FeedbackForm() {
-  const initialForm = {
-    email: "",
-    msg: "",
-  };
+  const router = useRouter();
   const [form, setForm] = useState(initialForm);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.id]: e.target.value });
   };
+
+  const addF = async () => {
+    await addNewFeedback(form);
+  };
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    addF();
+    router.refresh();
+  };
+
   const { theme } = useContext(themeContext);
 
   return (
-    <form className="w-full flex flex-col justify-center items-start py-5 pr-3">
+    <form
+      onSubmit={handleSubmit}
+      className="w-full flex flex-col justify-center items-start py-5 pr-3"
+    >
       <label htmlFor="email">Email</label>
       <input
         type="email"

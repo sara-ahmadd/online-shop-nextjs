@@ -3,8 +3,10 @@ import React, { useContext } from "react";
 import { themeContext } from "./../context/Theme";
 import Row from "./Row";
 import AddNewForm from "./AddNewForm";
+import { addNewProduct } from "@/lib/addNewProduct";
+import { ProductType } from "@/types";
 
-export default function DashBoard() {
+export default function DashBoard({ products }: { products: ProductType[] }) {
   const { theme } = useContext(themeContext);
   const initialForm = {
     title: "",
@@ -12,13 +14,18 @@ export default function DashBoard() {
     image: "",
     price: 0,
     description: "",
-    new: false,
+    newProduct: false,
+  };
+  const addProduct = async (form: ProductType): Promise<ProductType> => {
+    const res = await addNewProduct(form);
+    const data = await res;
+    return data;
   };
   return (
     <>
       <div className="flex flex-col justify-between items-center py-5">
         <h1 className="font-bold text-2xl">Add A New Product</h1>
-        <AddNewForm initialForm={initialForm} />
+        <AddNewForm initialForm={initialForm} functionality={addProduct} />
       </div>
       <div className="overflow-x-auto min-h-screen">
         <table className="table">
@@ -33,7 +40,13 @@ export default function DashBoard() {
             </tr>
           </thead>
           <tbody>
-            <Row />
+            {products?.length > 0 ? (
+              products.map((p, index) => (
+                <Row key={p._id} product={p} order={index} />
+              ))
+            ) : (
+              <h1>No Products to display</h1>
+            )}
           </tbody>
         </table>
       </div>
