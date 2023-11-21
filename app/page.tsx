@@ -3,6 +3,7 @@ import Feedback from "./components/Feedback";
 import Footer from "./components/Footer";
 import { Inter } from "next/font/google";
 
+
 export default function Home() {
   return (
     <main

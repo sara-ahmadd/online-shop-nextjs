@@ -16,6 +16,22 @@
     --foreground-rgb: 255, 255, 255;
   }
 } */
+
+/*custom scroll bar styles (custom snippet created by me, prefix: scrollBar)*/
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+} /* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+} /* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+} /* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 @keyframes flash {
   0% {
     opacity: 0.1;

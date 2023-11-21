@@ -19,10 +19,9 @@ export default function FeedbackForm() {
   const addF = async () => {
     await addNewFeedback(form);
   };
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    addF();
-    router.refresh();
+    await addF().then(() => {});
   };
 
   const { theme } = useContext(themeContext);

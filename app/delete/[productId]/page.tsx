@@ -13,11 +13,11 @@ export default async function DeleteProduct({ params }: ParamsType) {
   const { productId } = params;
   await connectdb();
   const product = await Product.findById(productId);
+  // const product = await getProduct(productId);
   await deleteProduct(product);
 
   return (
     <div className="page flex flex-col justify-center items-center py-5 gap-4">
-      
       <Link href={"/dashboard"} className="btn btn-accent">
         Back
       </Link>

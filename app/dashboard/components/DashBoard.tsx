@@ -1,8 +1,8 @@
 "use client";
 import React, { useContext } from "react";
-import { themeContext } from "./../context/Theme";
-import Row from "./Row";
-import AddNewForm from "./AddNewForm";
+import { themeContext } from "../../context/Theme";
+import Row from "../../components/Row";
+import AddNewForm from "../../components/ProductForm";
 import { addNewProduct } from "@/lib/addNewProduct";
 import { ProductType } from "@/types";
 
@@ -17,8 +17,7 @@ export default function DashBoard({ products }: { products: ProductType[] }) {
     newProduct: false,
   };
   const addProduct = async (form: ProductType): Promise<ProductType> => {
-    const res = await addNewProduct(form);
-    const data = await res;
+    const data = await addNewProduct(form);
     return data;
   };
   return (
@@ -31,7 +30,7 @@ export default function DashBoard({ products }: { products: ProductType[] }) {
         <table className="table">
           <thead>
             <tr className={theme ? "text-white" : "text-black"}>
-              <th>ID</th>
+              <th></th>
               <th>Title</th>
               <th>Image</th>
               <th>Price</th>

@@ -10,7 +10,31 @@ export default function ProductsList({
   return (
     <div className="flex flex-wrap justify-center gap-5 items-stretch w-full">
       {products?.length > 0 ? (
-        products.map((p) => <ProductCard key={p._id?.toString()} product={p} />)
+        products.map((p) => {
+          const {
+            _id,
+            title,
+            category,
+            image,
+            description,
+            price,
+            newProduct,
+          } = p;
+          return (
+            <ProductCard
+              key={p._id?.toString()}
+              product={{
+                _id,
+                title,
+                category,
+                image,
+                description,
+                price,
+                newProduct,
+              }}
+            />
+          );
+        })
       ) : (
         <h1 className="font-bold text-4xl italic">No Products to display!</h1>
       )}

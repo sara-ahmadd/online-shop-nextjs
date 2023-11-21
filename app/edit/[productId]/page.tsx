@@ -1,5 +1,5 @@
 import React from "react";
-import AddNewForm from "./../../components/AddNewForm";
+import AddNewForm from "../../components/ProductForm";
 import Link from "next/link";
 import { updateProduct } from "@/lib/updateProduct";
 import { ParamsType, ProductType } from "@/types";
@@ -10,11 +10,11 @@ export default async function EditProduct({ params }: ParamsType) {
   const { productId } = params;
   await connectdb();
   const initProduct = await Product.findById(productId);
+  // const initProduct = await getProduct(productId);
 
   const editAProduct = async (product: ProductType): Promise<ProductType> => {
     "use server";
-    const res = await updateProduct(product);
-    const data = await res;
+    const data = await updateProduct(product);
     return data;
   };
   return (

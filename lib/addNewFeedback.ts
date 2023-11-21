@@ -1,7 +1,9 @@
 import { FeedType } from "@/types";
 
 const url = "http://localhost:3000/api/feedbacks";
-export const addNewFeedback = async (inputData: FeedType) => {
+export const addNewFeedback = async (
+  inputData: FeedType
+): Promise<FeedType> => {
   try {
     const res = await fetch(url, {
       method: "POST",

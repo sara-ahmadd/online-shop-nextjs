@@ -1,7 +1,9 @@
 import { ProductType } from "@/types";
 
 const url = "http://localhost:3000/api/products";
-export const deleteProduct = async (inputData: ProductType) => {
+export const deleteProduct = async (
+  inputData: ProductType
+): Promise<ProductType> => {
   try {
     const res = await fetch(`${url}?id=${inputData._id}`, {
       method: "DELETE",

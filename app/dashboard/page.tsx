@@ -1,5 +1,5 @@
 import React from "react";
-import DashBoard from "./../components/DashBoard";
+import DashBoard from "./components/DashBoard";
 import { ProductType } from "@/types";
 import Product from "@/models/product";
 import { connectdb } from "@/database/mongodb";

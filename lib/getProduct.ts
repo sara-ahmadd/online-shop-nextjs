@@ -1,18 +1,20 @@
+import { ProductType } from "@/types";
+
 const url = "http://localhost:3000/api/products";
-export const getProduct = async (id: string) => {
+export const getProduct = async (id: string): Promise<ProductType> => {
   try {
-    const res = await fetch(`${url}?id=${id}`);
-    if (!res.ok) {
-      throw new Error("Error in response!");
-    }
+    const res = await fetch(url + `?id=${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-allow-Origin": "*",
+      },
+    });
     const data = await res.json();
-    if (!data) {
-      throw new Error("Error in data!");
-    }
     return data;
   } catch (error) {
     throw new Error(
-      `Error in fetching products from the url: (${url}?id=${id})`
+      `Error in fetching product from the url:(${url}?id=${id})==>${error}.`
     );
   }
 };

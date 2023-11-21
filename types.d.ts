@@ -15,3 +15,8 @@ export type FeedType = {
 export type ParamsType = {
   params: { productId: string };
 };
+export type UserType = {
+  email?: string;
+  image: string;
+  name: string;
+};

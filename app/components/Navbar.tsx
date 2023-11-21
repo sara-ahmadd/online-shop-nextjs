@@ -69,10 +69,16 @@ export default function Navbar() {
                 <Link href={"/profile"}>Profile</Link>
               </li>
               <li>
-                <Link href={"/"}>Signin</Link>
+                <Link href={"/api/auth/signin"}>Signin</Link>
               </li>
               <li>
-                <Link href={"/"}>Signup</Link>
+                <Link href={"/signup"}>Signup</Link>
+              </li>
+              <li>
+                <Link href={"/api/auth/signout"}>Signout</Link>
+              </li>
+              <li>
+                <Link href={"/cart"}>Cart</Link>
               </li>
             </ul>
           </div>

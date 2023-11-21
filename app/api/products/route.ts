@@ -7,8 +7,16 @@ import { NextResponse } from "next/server";
 export const GET = async (req: Request) => {
   await connectdb();
   try {
-    const data: ProductType[] = await Product.find();
-    return NextResponse.json({ data: data });
+    const { searchParams } = new URL(req.url);
+    if (searchParams.has("id")) {
+      const data: ProductType = (await Product.findById(
+        searchParams.get("id")
+      )) as ProductType;
+      return NextResponse.json(data);
+    } else {
+      const data: ProductType[] = await Product.find();
+      return NextResponse.json(data);
+    }
   } catch (error) {
     throw new Error("Error in fetching_all_products api.");
   }
