@@ -29,15 +29,9 @@ export default function Searchbar() {
     handleSearch(e.target.value);
     console.log(search);
   };
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!search) return;
-    console.log(search);
-  };
 
   return (
     <form
-      onSubmit={handleSubmit}
       className={`flex gap-4 items-center relative ${
         theme ? "text-black" : undefined
       }`}
