@@ -12,15 +12,18 @@ const initContext: ThemeContext = {
 
 export const themeContext = createContext(initContext);
 
-export default function ThemeContext({children} : {children : React.ReactNode}){
-  const ThemeContext = useContext(themeContext);
+export default function ThemeContext({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [color, setColor] = useState(false);
   const handleTheme = () => {
     setColor(!color);
   };
-  return(
-    <themeContext.Provider value={{ theme:color , handleTheme }}>
+  return (
+    <themeContext.Provider value={{ theme: color, handleTheme }}>
       {children}
     </themeContext.Provider>
-  )
+  );
 }

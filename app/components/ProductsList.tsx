@@ -1,12 +1,21 @@
+"use client";
 import { ProductType } from "@/types";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import { getFilteredProducts } from "@/lib/getFilteredProducts";
+import { initProduct } from "./ProductDetails";
+import { SearchContext } from "../context/Search";
 
-export default function ProductsList({
-  products,
-}: {
-  products: ProductType[];
-}) {
+export default function ProductsList() {
+  const [products, setProducts] = useState([initProduct]);
+  const { search } = useContext(SearchContext);
+  useEffect(() => {
+    const getData = async () => {
+      const data: ProductType[] = await getFilteredProducts(search);
+      setProducts(data);
+    };
+    getData();
+  }, [search]);
   return (
     <div className="flex flex-wrap justify-center gap-5 items-stretch w-full">
       {products?.length > 0 ? (

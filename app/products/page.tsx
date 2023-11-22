@@ -1,24 +1,25 @@
 import React from "react";
 import ProductsList from "../components/ProductsList";
-import { getAllProducts } from "@/lib/getAllProducts";
-import { ProductType } from "@/types";
-import Product from "@/models/product";
-import { connectdb } from "@/database/mongodb";
 import { getServerSession } from "next-auth";
-import { OPTIONS } from "../api/auth/[...nextauth]/route";
+import { options } from "../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
+import Searchbar from "../components/Searchbar";
+import Categories from "../components/Categories";
 
 export default async function ProductsPage() {
-  await connectdb();
-  const products: ProductType[] = await Product.find();
-
-  const session = await getServerSession(OPTIONS);
+  const session = await getServerSession(options);
   if (!session) {
     redirect("/api/auth/signin?callbackUrl=/products");
   }
   return (
-    <div className="page mx-auto flex items-center justify-between p-5">
-      <ProductsList products={products} />
+    <div className="page mx-auto flex flex-col items-center gap-5 relative">
+      <div className="fixed top-0 left-24 w-full h-16 z-50">
+        <Categories />
+      </div>
+      <div className="pt-16 flex flex-col items-center gap-5">
+        <Searchbar />
+        <ProductsList />
+      </div>
     </div>
   );
 }

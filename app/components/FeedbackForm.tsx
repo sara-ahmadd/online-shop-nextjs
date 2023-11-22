@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, FormEvent, useContext, ChangeEvent } from "react";
-import { themeContext } from "./../context/Theme";
+import { themeContext } from "../context/Theme";
 import { useRouter } from "next/navigation";
 import { addNewFeedback } from "@/lib/addNewFeedback";
 

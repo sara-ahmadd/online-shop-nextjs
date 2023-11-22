@@ -1,11 +1,11 @@
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import React from "react";
-import { OPTIONS } from "../api/auth/[...nextauth]/route";
+import { options } from "../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
-  const session = await getServerSession(OPTIONS);
+  const session = await getServerSession(options);
   if (!session) {
     redirect("/api/auth/signin?callbackUrl=/profile");
   }

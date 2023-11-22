@@ -6,6 +6,7 @@ import ThemeProvider, { themeContext } from "./context/Theme";
 import Navbar from "./components/Navbar";
 import Parent from "./components/Parent";
 import ThemeBtn from "./components/ThemeBtn";
+import SearchContextProvider from "./context/Search";
 
 export const metadata: Metadata = {
   title: "Online Shop",
@@ -20,12 +21,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <ThemeProvider>
-        <body>
-          <Parent>
-            <Navbar />
-            {children}
-          </Parent>
-        </body>
+        <SearchContextProvider>
+          <body>
+            <Parent>
+              <Navbar />
+              {children}
+            </Parent>
+          </body>
+        </SearchContextProvider>
       </ThemeProvider>
     </html>
   );
