@@ -8,23 +8,23 @@ import React, {
 } from "react";
 import { FaSearchengin } from "react-icons/fa6";
 import { themeContext } from "../context/Theme";
-import { getFilteredProducts } from "@/lib/getFilteredProducts";
-import { getAllProducts } from "@/lib/getAllProducts";
+import { getFilteredProducts } from "@/lib/products/getFilteredProducts";
+import { getAllProducts } from "@/lib/products/getAllProducts";
 import { SearchContext } from "../context/Search";
+import { ProductType } from "./../../types";
+import Btn from "./Btn";
+import Categories from "./Categories";
+import { getCategoryProducts } from "@/lib/products/getCategoryProducts";
 
-export default function Searchbar() {
-  const { search, handleSearch } = useContext(SearchContext);
+export default function Searchbar({
+  search,
+  handleSearch,
+}: {
+  search: string;
+  handleSearch: (s: string) => void;
+}) {
   const { theme } = useContext(themeContext);
-  useEffect(() => {
-    const getFilteredData = async (txt: string) => {
-      if (search && search.length > 0) {
-        await getFilteredProducts(txt).then((res) => console.log(res));
-      } else {
-        await getAllProducts().then((res) => console.log(res));
-      }
-    };
-    getFilteredData(search);
-  }, [search]);
+
   const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
     handleSearch(e.target.value);
     console.log(search);

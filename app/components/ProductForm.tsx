@@ -28,6 +28,7 @@ export default function AddProductForm({
     functionality(form);
     setForm(emptyForm);
     router.refresh();
+    router.push("/dashboard");
   };
   const { theme } = useContext(themeContext);
 

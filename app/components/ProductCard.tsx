@@ -14,7 +14,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
         theme ? "text-black" : undefined
       } card-animation `}
     >
-      <Link href={`/products/${product._id?.toString()}`}>
+      <Link href={`/${product._id?.toString()}`}>
         <figure className="card-flash h-96 w-80">
           <Image
             src={product.image.length > 0 ? product.image : "/spinner.gif"}

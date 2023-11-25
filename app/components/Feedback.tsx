@@ -3,7 +3,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import FeedbackForm from "./FeedbackForm";
 import { FaUser } from "react-icons/fa";
-import { getAllFeedbacks } from "@/lib/getFeedbacks";
+import { getAllFeedbacks } from "@/lib/feedbacks/getFeedbacks";
 import { FeedType } from "@/types";
 import { useRouter } from "next/navigation";
 

@@ -1,10 +1,13 @@
 "use client";
 import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { themeContext } from "../context/Theme";
-const initUser = {
+import { UserType } from "@/types";
+const initUser: UserType = {
   email: "",
   password: "",
   name: "",
+  image: "",
+  cart: [],
 };
 
 export default function SignUP() {
@@ -24,9 +27,9 @@ export default function SignUP() {
   return (
     <form
       onSubmit={handleSubmit}
-      className={`flex flex-col justify-center items-center gap-4 w-full p-4 ${
+      className={`mx-auto flex flex-col justify-center items-center gap-4 w-4/5 sm:w-1/2 p-2 sm:p-10 ${
         theme && "text-black"
-      }`}
+      } rounded-md shadow-xl bg-slate-200/20 backdrop-blur-sm border-2 border-teal-500`}
     >
       <input
         required
@@ -55,7 +58,16 @@ export default function SignUP() {
         placeholder="Password"
         className="input input-bordered input-accent w-full max-w-xs"
       />
-      <button className="btn btn-accent">Submit</button>
+      <input
+        required
+        name="image"
+        value={form.image}
+        onChange={handleChange}
+        type="text"
+        placeholder="Image URL"
+        className="input input-bordered input-accent w-full max-w-xs"
+      />
+      <button className="btn btn-accent">Register</button>
     </form>
   );
 }

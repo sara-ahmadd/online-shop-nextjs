@@ -9,7 +9,7 @@ export default function Intro() {
           return <div key={i} className={`img img${i}`}></div>;
         })}
         <div className="img5 flex justify-center items-center">
-          <Link id="buttn" className="btn btn-accent" href={"/products"}>
+          <Link id="buttn" className="btn btn-accent" href={"#products"}>
             products
           </Link>
         </div>

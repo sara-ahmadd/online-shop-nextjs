@@ -27,7 +27,7 @@ export default function Row({
       <td>{product.category}</td>
       <td>
         <div className="flex items-center gap-2">
-          <Link href={`/products/${product._id}`} className="btn btn-accent">
+          <Link href={`/${product._id}`} className="btn btn-accent">
             View
           </Link>
           <Link href={`/edit/${product._id}`} className="btn btn-accent">

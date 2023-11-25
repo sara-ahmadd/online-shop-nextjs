@@ -13,7 +13,7 @@ export default async function ProductPage({ params }: ParamsType) {
   const { _id, title, image, category, description, price, newProduct } =
     product;
   return (
-    <div className="page w-96 h-screen flex flex-col items-center justify-center gap-3">
+    <div className="page w-screen h-screen flex flex-col items-center justify-center gap-3">
       <ProductDetails
         product={{
           _id: product._id?.toString(),

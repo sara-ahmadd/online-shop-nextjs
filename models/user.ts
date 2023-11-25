@@ -9,8 +9,14 @@ const UserModel = new UserSchema({
   password: {
     type: String,
   },
-  userName: {
+  image: {
     type: String,
+  },
+  name: {
+    type: String,
+  },
+  cart: {
+    type: Array,
   },
 });
 const User = models.User || model("User", UserModel);

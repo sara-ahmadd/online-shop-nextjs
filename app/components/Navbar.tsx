@@ -11,8 +11,9 @@ export default function Navbar() {
   const path = usePathname();
   return (
     <nav
-      className={`flex flex-col items-center justify-start gap-5 p-2 min-w-fit h-screen fixed bg-gradient-to-b from-teal-500/60 to-teal-300/20  
-      t-0 l-0 z-50 ${theme ? "text-white" : "text-black"}`}
+      className={`flex flex-col items-center justify-start gap-14 p-2 min-w-fit h-4/5 top-10 fixed bg-gradient-to-b from-teal-500/40 to-teal-300/50  backdrop-blur-md rounded-md ml-5  z-50 ${
+        theme ? "text-white" : "text-black"
+      }`}
     >
       <h1 className="h-14">
         <Link href={"/"}>Logo</Link>

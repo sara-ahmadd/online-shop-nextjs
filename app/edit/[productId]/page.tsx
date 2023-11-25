@@ -1,9 +1,9 @@
 import React from "react";
 import AddNewForm from "../../components/ProductForm";
 import Link from "next/link";
-import { updateProduct } from "@/lib/updateProduct";
+import { updateProduct } from "@/lib/products/updateProduct";
 import { ParamsType, ProductType } from "@/types";
-import { getProduct } from "@/lib/getProduct";
+import { getProduct } from "@/lib/products/getProduct";
 import { connectdb } from "@/database/mongodb";
 import Product from "@/models/product";
 export default async function EditProduct({ params }: ParamsType) {

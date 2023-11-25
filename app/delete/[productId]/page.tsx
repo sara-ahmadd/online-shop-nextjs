@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { ParamsType, ProductType } from "@/types";
-import { getProduct } from "@/lib/getProduct";
+import { getProduct } from "@/lib/products/getProduct";
 import { initProduct } from "@/app/components/ProductDetails";
 import Btn from "@/app/components/Btn";
-import { deleteProduct } from "@/lib/deleteProduct";
+import { deleteProduct } from "@/lib/products/deleteProduct";
 import { usePathname, useRouter } from "next/navigation";
 import { connectdb } from "@/database/mongodb";
 import Product from "@/models/product";

@@ -3,25 +3,23 @@ import React, { useContext, useEffect, useState } from "react";
 import { themeContext } from "../../context/Theme";
 import Row from "../../components/Row";
 import AddNewForm from "../../components/ProductForm";
-import { addNewProduct } from "@/lib/addNewProduct";
+import { addNewProduct } from "@/lib/products/addNewProduct";
 import { ProductType } from "@/types";
 import { initProduct } from "@/app/components/ProductDetails";
 import { SearchContext } from "@/app/context/Search";
-import { getFilteredProducts } from "@/lib/getFilteredProducts";
+import { getFilteredProducts } from "@/lib/products/getFilteredProducts";
 import { IoClose } from "react-icons/io5";
+import FilterCategories from "@/app/components/FilterCategories";
+import Searchbar from "@/app/components/Searchbar";
+import { getAllProducts } from "@/lib/products/getAllProducts";
+import useGetSearchedProducts from "@/hooks/useGetSearchedProducts";
 
 export default function DashBoard() {
   const { theme } = useContext(themeContext);
-  const [products, setProducts] = useState([initProduct]);
   const [displayForm, setDisplayForm] = useState(false);
-  const { search } = useContext(SearchContext);
-  useEffect(() => {
-    const getData = async () => {
-      const data: ProductType[] = await getFilteredProducts(search);
-      setProducts(data);
-    };
-    getData();
-  }, [search]);
+  const { products, handleProducts, search, handleSearch } =
+    useGetSearchedProducts();
+
   const initialForm = {
     title: "",
     category: "",
@@ -35,7 +33,11 @@ export default function DashBoard() {
     return data;
   };
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center gap-8">
+      <div className="w-full flex flex-col justify-center items-start gap-4 p-4">
+        <Searchbar search={search} handleSearch={handleSearch} />
+        <FilterCategories handleProducts={handleProducts} />
+      </div>
       <div className="flex flex-col justify-between items-center w-11/12 py-5">
         <button
           onClick={() => setDisplayForm(!displayForm)}

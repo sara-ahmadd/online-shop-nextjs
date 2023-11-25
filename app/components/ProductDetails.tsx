@@ -19,7 +19,7 @@ export default function ProductDetails({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
   const router = useRouter();
   return (
-    <div className="flex flex-col justify-center items-center gap-5">
+    <div className="w-11/12 flex flex-col mx-auto justify-center items-center gap-5">
       <button
         onClick={() => router.back()}
         className="btn btn-accent btn-outline w-fit"
@@ -27,15 +27,16 @@ export default function ProductDetails({ product }: { product: ProductType }) {
         Back
       </button>
       <div
-        className={`card lg:card-side bg-base-100 shadow-xl ${
+        className={`card card-compact sm:card-side bg-base-100 shadow-xl ${
           theme ? "text-black" : undefined
-        }`}
+        } w-full`}
       >
-        <figure className="relative h-96 w-80">
+        <figure className="relative h-96 w-full sm:w-1/2">
           <Image
             src={product.image.length > 0 ? product.image : "/spinner.gif"}
             alt={product.title}
-            fill={true}
+            fill
+            sizes="max-width:100%; height:100%"
             className="rounded object-cover"
           />
         </figure>

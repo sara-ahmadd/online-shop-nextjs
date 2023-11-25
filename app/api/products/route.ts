@@ -14,13 +14,18 @@ export const GET = async (req: Request) => {
       )) as ProductType;
       return NextResponse.json(data);
     } else if (searchParams.has("search")) {
-      const txt = searchParams.get("search");
+      const txt = searchParams.get("search") as string;
       const data: ProductType[] = await Product.find();
       const products = data.filter((x) =>
         x.title.toLowerCase().includes(txt?.toLowerCase() as string)
       );
       const res = products.length > 0 ? products : data;
       return NextResponse.json(res);
+    } else if (searchParams.has("category")) {
+      const categories = await Product.find({
+        category: searchParams.get("category"),
+      });
+      return NextResponse.json(categories);
     } else {
       const data: ProductType[] = await Product.find();
       return NextResponse.json(data);

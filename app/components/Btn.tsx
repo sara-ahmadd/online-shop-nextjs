@@ -6,12 +6,12 @@ export default function Btn({
   handleFunc,
   val,
 }: {
-  handleFunc: () => Promise<ProductType>;
+  handleFunc: () => Promise<ProductType> | void;
   val: string;
 }) {
   return (
     <button className="btn btn-outline btn-accent" onClick={handleFunc}>
-      Delete
+      {val}
     </button>
   );
 }
