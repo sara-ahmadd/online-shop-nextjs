@@ -9,6 +9,7 @@ import { addProduct } from "@/lib/cart/addProduct";
 import { UserContext } from "../context/UserContext";
 import { updateUserData } from "@/lib/user/updateUser";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
@@ -17,6 +18,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
     required: true,
     onUnauthenticated() {},
   });
+  const router = useRouter();
   useEffect(() => {
     handleUser(session?.user as UserType);
   }, [handleUser, session?.user]);
@@ -49,6 +51,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
             className="w-28 h-28 cursor-pointer"
             onClick={async () => {
               await addProduct(user, product);
+              router.refresh();
             }}
           >
             <FaCartPlus className="font-bold text-2xl" />

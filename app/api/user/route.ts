@@ -8,10 +8,10 @@ export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     if (searchParams.has("email")) {
-      const data: UserType[] = await User.find({
+      const data: UserType = (await User.findOne({
         email: searchParams.get("email"),
-      });
-      return NextResponse.json(data[0]);
+      })) as UserType;
+      return NextResponse.json(data);
     } else {
       const data: UserType[] = await User.find();
       return NextResponse.json(data);

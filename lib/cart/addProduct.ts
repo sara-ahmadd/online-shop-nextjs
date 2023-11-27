@@ -5,15 +5,15 @@ import { getUserData } from "../user/getUser";
 
 export const addProduct = async (user: UserType, product: ProductType) => {
   const res = await getUserData(user.email ?? "");
-  const findProduct = res.cart?.find((p) => p._id === product._id);
+  const matchedProduct = res.cart?.find((p) => p._id === product._id);
 
-  if (findProduct !== undefined) {
-    res.cart?.splice(res.cart.indexOf(findProduct), 1);
+  if (matchedProduct !== undefined) {
+    const newCart = res.cart?.filter((p) => p._id !== product._id);
     const finalCart = [
-      ...(res.cart ?? []),
+      ...(newCart ?? []),
       {
-        ...findProduct,
-        quantity: (findProduct.quantity || 0) + 1,
+        ...matchedProduct,
+        quantity: (matchedProduct.quantity || 0) + 1,
       },
     ];
     const u = { ...res, cart: finalCart };

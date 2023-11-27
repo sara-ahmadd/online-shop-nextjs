@@ -34,7 +34,7 @@ export default function CartContextProvider({
   useEffect(() => {
     const getCart = async () => {
       const userFromDb = await getUserData(user?.email as string);
-      setCart(userFromDb.cart as ProductType[]);
+      setCart(userFromDb?.cart ?? []);
     };
     getCart();
   }, [user?.email]);

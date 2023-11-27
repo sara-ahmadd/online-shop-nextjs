@@ -6,7 +6,7 @@ export default function Btn({
   handleFunc,
   val,
 }: {
-  handleFunc: () => Promise<ProductType> | void;
+  handleFunc: () => Promise<any> | void;
   val: string;
 }) {
   return (

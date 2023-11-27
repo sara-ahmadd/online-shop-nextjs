@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import ThemeBtn from "./ThemeBtn";
 import { redirect, usePathname } from "next/navigation";
 import { FaUser } from "react-icons/fa";
@@ -23,10 +23,10 @@ export default function Navbar() {
     required: true,
     onUnauthenticated() {},
   });
+  // let pieces = useRef(0);
   const [pieces, setPieces] = useState(0);
   useEffect(() => {
     handleUser(session?.user as UserType);
-
     const getPieces = () => {
       cart.map((p) => {
         setPieces((prev) => prev + (p.quantity as number));
@@ -34,7 +34,9 @@ export default function Navbar() {
     };
     getPieces();
   }, [handleUser, session?.user, cart]);
+
   const path = usePathname();
+
   return (
     <nav
       className={`flex md:flex-col items-center justify-between md:justify-start gap-5 md:gap-14 p-2 min-w-full md:min-w-fit h-14 md:h-4/5 bottom-3 md:top-10 left-1/2 md:left-1 -translate-x-1/2 fixed bg-gradient-to-b from-teal-500/40 to-teal-300/50  backdrop-blur-md rounded-md ml-0 md:ml-6  z-50 ${
