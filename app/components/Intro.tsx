@@ -3,7 +3,7 @@ import React from "react";
 
 export default function Intro() {
   return (
-    <div className="flex flex-col justify-center gap-4 items-center min-h-screen w-full py-5">
+    <div className="flex flex-col justify-start gap-4 items-center min-h-screen w-11/12 py-5">
       <div className="grid w-11/12">
         {[1, 2, 3, 4].map((i) => {
           return <div key={i} className={`img img${i}`}></div>;

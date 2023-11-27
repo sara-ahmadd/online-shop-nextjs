@@ -17,7 +17,7 @@ export default async function DeleteProduct({ params }: ParamsType) {
   await deleteProduct(product);
 
   return (
-    <div className="page flex flex-col justify-center items-center py-5 gap-4">
+    <div className="flex flex-col justify-center items-center py-5 gap-4">
       <Link href={"/dashboard"} className="btn btn-accent">
         Back
       </Link>

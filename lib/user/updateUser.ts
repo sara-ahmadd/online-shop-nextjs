@@ -1,7 +1,9 @@
 import { UserType } from "@/types";
+import { getUserData } from "./getUser";
 
 export const updateUserData = async (u: UserType): Promise<UserType> => {
-  const data = await fetch(`http://localhost:3000/api/user`, {
+  // const user = await getUserData(u.email ?? "");
+  const user = await fetch(`http://localhost:3000/api/user`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -9,6 +11,6 @@ export const updateUserData = async (u: UserType): Promise<UserType> => {
     },
     body: JSON.stringify(u),
   });
-  const user: UserType = await data.json();
-  return user;
+  const res: UserType = await user.json();
+  return res;
 };

@@ -1,6 +1,6 @@
 import { UserType } from "@/types";
 
-export const getUserData = async (id: string): Promise<UserType> => {
+export const deleteUserData = async (id: string): Promise<UserType> => {
   const data = await fetch(`http://localhost:3000/api/user?id=${id}`, {
     method: "DELETE",
     headers: {

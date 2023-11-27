@@ -1,3 +1,7 @@
+import { connectdb } from "@/database/mongodb";
+import { getUserData } from "@/lib/user/getUser";
+import User from "@/models/user";
+import { ProductType, UserType } from "@/types";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
@@ -19,14 +23,28 @@ export const options: NextAuthOptions = {
         email: { label: "Email", type: "email", placeholder: "Your Email" },
       },
       async authorize(credentials) {
-        const user = { id: "122", name: "sara", password: "123" };
+        await connectdb();
+        const data: UserType = (await User.findOne({
+          email: credentials?.email,
+        })) as UserType;
+        const user = {
+          id: data._id as string,
+          name: data.name as string,
+          image: data.image as string,
+          email: data.email as string,
+          password: data.password as string,
+          cart: data.cart as ProductType[],
+        };
+
         if (
           user.name !== credentials?.username ||
-          user.password !== credentials.password
+          user.password !== credentials?.password
         ) {
           return null;
+        } else {
+          console.log(user);
+          return user;
         }
-        return user;
       },
     }),
   ],

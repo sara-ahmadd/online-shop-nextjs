@@ -4,7 +4,7 @@ import signUp from "./../../public/sign-up.svg";
 import Image from "next/image";
 function SignupPage() {
   return (
-    <div className="page w-full h-full pt-5 flex flex-wrap justify-center items-center gap-7">
+    <div className="w-full h-full pt-5 flex flex-wrap justify-center items-center gap-7 pb-10 relative">
       <Image src={signUp} alt="signUp" width={400} height={400} />
       <SignUP />
     </div>

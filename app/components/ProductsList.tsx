@@ -11,12 +11,12 @@ export default function ProductsList() {
     useGetSearchedProducts();
 
   return (
-    <div className="w-full flex flex-col justify-center gap-6 items-start px-20">
+    <div className="w-full flex flex-col justify-center gap-6 items-start lg:px-20">
       <div className=" w-full flex flex-col justify-center items-start gap-4 p-4">
         <Searchbar search={search} handleSearch={handleSearch} />
         <FilterCategories handleProducts={handleProducts} />
       </div>
-      <div className="flex flex-wrap justify-center gap-5 items-stretch w-full">
+      <div className="flex flex-wrap justify-start sm:justify-center pl-3 gap-5 items-center w-11/12">
         {products?.length > 0 ? (
           products.map((p) => {
             const {

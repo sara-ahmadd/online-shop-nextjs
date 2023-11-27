@@ -18,7 +18,7 @@ export default async function EditProduct({ params }: ParamsType) {
     return data;
   };
   return (
-    <div className="page flex flex-col justify-center items-center py-5 gap-4">
+    <div className="flex flex-col justify-center items-center py-5 gap-4">
       <h1 className="font-bold text-2xl">Edit The Requested Product</h1>
       <Link href={"/dashboard"} className="btn btn-accent">
         Back

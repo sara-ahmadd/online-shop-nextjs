@@ -11,10 +11,10 @@ export async function GET(req: Request) {
       const data: UserType[] = await User.find({
         email: searchParams.get("email"),
       });
-      return NextResponse.json({ user: data[0] });
+      return NextResponse.json(data[0]);
     } else {
       const data: UserType[] = await User.find();
-      return NextResponse.json({ data });
+      return NextResponse.json(data);
     }
   } catch (error) {
     throw new Error(`Error in getting the user data from db ==> ${error}`);
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       email,
       cart,
     });
-    return NextResponse.json({ user: data });
+    return NextResponse.json(data);
   } catch (error) {
     throw new Error(`Error in adding the user data to db ==> ${error}`);
   }
@@ -42,15 +42,15 @@ export async function PUT(req: Request) {
   await connectdb();
   try {
     const reqBody = await req.json();
-    const { name, email, password, image, cart } = reqBody;
-    const data: UserType | null = await User.findByIdAndUpdate(reqBody._id, {
+    const { _id, name, email, password, image, cart } = reqBody;
+    const data = (await User.findByIdAndUpdate(_id, {
       name,
       password,
       image,
       email,
       cart,
-    });
-    return NextResponse.json({ user: data });
+    })) as UserType;
+    return NextResponse.json(data);
   } catch (error) {
     throw new Error(`Error in updating the user data in db ==> ${error}`);
   }
@@ -63,7 +63,7 @@ export async function DELETE(req: Request) {
     const data: UserType | null = await User.findByIdAndDelete(
       searchParams.get("id")
     );
-    return NextResponse.json({ user: data });
+    return NextResponse.json(data);
   } catch (error) {
     throw new Error(`Error in getting the user data from db ==> ${error}`);
   }

@@ -1,16 +1,28 @@
 "use client";
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Link from "next/link";
 import { FaCartPlus } from "react-icons/fa";
-import { ProductType } from "@/types";
+import { ProductType, UserType } from "@/types";
 import { themeContext } from "../context/Theme";
+import { addProduct } from "@/lib/cart/addProduct";
+import { UserContext } from "../context/UserContext";
+import { updateUserData } from "@/lib/user/updateUser";
+import { useSession } from "next-auth/react";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
+  const { user, handleUser } = useContext(UserContext);
+  const { data: session } = useSession({
+    required: true,
+    onUnauthenticated() {},
+  });
+  useEffect(() => {
+    handleUser(session?.user as UserType);
+  }, [handleUser, session?.user]);
   return (
     <div
-      className={`card bg-base-100 shadow-xl hover:scale-105 transition-all ${
+      className={`card card-compact bg-base-100 shadow-xl hover:scale-105 transition-all ${
         theme ? "text-black" : undefined
       } card-animation `}
     >
@@ -33,7 +45,14 @@ export default function ProductCard({ product }: { product: ProductType }) {
         </h2>
         <div className="flex justify-between items-center">
           <p className="font-bold text-xl">${product.price}</p>
-          <FaCartPlus className="font-bold text-2xl" />
+          <button
+            className="w-28 h-28 cursor-pointer"
+            onClick={async () => {
+              await addProduct(user, product);
+            }}
+          >
+            <FaCartPlus className="font-bold text-2xl" />
+          </button>
         </div>
         <div className="card-actions justify-end">
           <div className="badge badge-outline">{product.category}</div>

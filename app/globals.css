@@ -11,6 +11,7 @@ html {
   --light: #fff;
   --dark: #000;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /*

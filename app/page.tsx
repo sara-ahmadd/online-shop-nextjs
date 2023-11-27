@@ -9,7 +9,7 @@ import ProductsList from "./components/ProductsList";
 export default function Home() {
   return (
     <main
-      className={`page w-screen flex flex-col justify-between items-center min-h-screen`}
+      className={`max-w-screen flex flex-col justify-between items-center min-h-screen`}
     >
       <Intro />
       <div

@@ -7,6 +7,9 @@ import Navbar from "./components/Navbar";
 import Parent from "./components/Parent";
 import ThemeBtn from "./components/ThemeBtn";
 import SearchContextProvider from "./context/Search";
+import UserContextProvider from "./context/UserContext";
+import AuthProvider from "./context/AuthProvider";
+import CartContextProvider from "./context/CartContext";
 
 export const metadata: Metadata = {
   title: "Online Shop",
@@ -20,16 +23,20 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <ThemeProvider>
-        <SearchContextProvider>
-          <body>
-            <Parent>
-              <Navbar />
-              {children}
-            </Parent>
-          </body>
-        </SearchContextProvider>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider>
+          <SearchContextProvider>
+            <UserContextProvider>
+              <CartContextProvider>
+                <body>
+                  <Navbar />
+                  <Parent>{children}</Parent>
+                </body>
+              </CartContextProvider>
+            </UserContextProvider>
+          </SearchContextProvider>
+        </ThemeProvider>
+      </AuthProvider>
     </html>
   );
 }

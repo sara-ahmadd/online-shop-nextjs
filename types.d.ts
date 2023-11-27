@@ -6,6 +6,7 @@ export type ProductType = {
   price: number;
   description: string;
   newProduct?: boolean;
+  quantity?: number;
 };
 export type FeedType = {
   _id?: string;
@@ -16,9 +17,10 @@ export type ParamsType = {
   params: { productId: string };
 };
 export type UserType = {
-  email: string;
-  image?: string;
-  name: string;
-  password: string;
-  cart: ProductType[];
+  _id?: string;
+  email?: string | null;
+  image?: string | null;
+  name?: string | null;
+  password?: string | null;
+  cart?: ProductType[];
 };
