@@ -2,44 +2,32 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import ThemeBtn from "./ThemeBtn";
-import { redirect, usePathname } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { FaUser } from "react-icons/fa";
 import { themeContext } from "../context/Theme";
-import { UserContext } from "../context/UserContext";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
-import { UserType } from "@/types";
+import { ProductType, UserType } from "@/types";
 import { ImHome } from "react-icons/im";
 import { RxDashboard } from "react-icons/rx";
 import { GrContact } from "react-icons/gr";
 import { BsShopWindow } from "react-icons/bs";
-import { CartContext } from "../context/CartContext";
+import { GiShoppingCart } from "react-icons/gi";
 
-export default function Navbar() {
+export default function Navbar({ user }: { user: UserType }) {
   const { theme } = useContext(themeContext);
-  const { user, handleUser } = useContext(UserContext);
-  const { cart } = useContext(CartContext);
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {},
-  });
-  // let pieces = useRef(0);
-  const [pieces, setPieces] = useState(0);
-  useEffect(() => {
-    handleUser(session?.user as UserType);
-    const getPieces = () => {
-      cart.map((p) => {
-        setPieces((prev) => prev + (p.quantity as number));
-      });
-    };
-    getPieces();
-  }, [handleUser, session?.user, cart]);
-
   const path = usePathname();
+
+  const getPieces = (c: ProductType[]) => {
+    let sum = 0;
+    c?.map((p) => {
+      sum += p.quantity as number;
+    });
+    return sum;
+  };
 
   return (
     <nav
-      className={`flex md:flex-col items-center justify-between md:justify-start gap-5 md:gap-14 p-2 min-w-full md:min-w-fit h-14 md:h-4/5 bottom-3 md:top-10 left-1/2 md:left-1 -translate-x-1/2 fixed bg-gradient-to-b from-teal-500/40 to-teal-300/50  backdrop-blur-md rounded-md ml-0 md:ml-6  z-50 ${
+      className={`flex md:flex-col items-center justify-between md:justify-start gap-5 md:gap-14 p-2 min-w-full md:min-w-max h-14 md:h-4/5 bottom-3 md:top-10 left-1/2 md:left-1 -translate-x-1/2 fixed bg-gradient-to-b from-teal-500/40 to-teal-300/50  backdrop-blur-md rounded-md ml-0 md:ml-6  z-50 ${
         theme ? "text-white" : "text-black"
       } px-5 md:px-1 h-14 text-2xl`}
     >
@@ -123,11 +111,21 @@ export default function Navbar() {
               <li>
                 <Link href={"/api/auth/signout"}>Signout</Link>
               </li>
-              <li>
-                <Link href={"/cart"}>Cart-{pieces}</Link>
-              </li>
             </ul>
           </div>
+        </li>
+        <li>
+          <Link
+            href={"/cart"}
+            className="flex justify-center items-center relative w-14"
+          >
+            <span className="text-left">
+              <GiShoppingCart className="w-7 h-7 font-bold" />
+            </span>
+            <span className="absolute -right-1 -top-2 text-sm bg-red-800 w-5 h-5 rounded-full flex justify-center items-center text-white">
+              {getPieces(user.cart ?? [])}
+            </span>
+          </Link>
         </li>
       </ul>
     </nav>

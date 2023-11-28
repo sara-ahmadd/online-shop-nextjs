@@ -1,27 +1,27 @@
 "use client";
 import Image from "next/image";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import Link from "next/link";
 import { FaCartPlus } from "react-icons/fa";
 import { ProductType, UserType } from "@/types";
 import { themeContext } from "../context/Theme";
 import { addProduct } from "@/lib/cart/addProduct";
-import { UserContext } from "../context/UserContext";
-import { updateUserData } from "@/lib/user/updateUser";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
-  const { user, handleUser } = useContext(UserContext);
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {},
   });
   const router = useRouter();
-  useEffect(() => {
-    handleUser(session?.user as UserType);
-  }, [handleUser, session?.user]);
+
+  const addProductToCart = async () => {
+    const p = await addProduct(session?.user as UserType, product);
+    router.refresh();
+    return p;
+  };
   return (
     <div
       className={`card card-compact bg-base-100 shadow-xl hover:scale-105 transition-all ${
@@ -49,10 +49,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
           <p className="font-bold text-xl">${product.price}</p>
           <button
             className="w-28 h-28 cursor-pointer"
-            onClick={async () => {
-              await addProduct(user, product);
-              router.refresh();
-            }}
+            onClick={addProductToCart}
           >
             <FaCartPlus className="font-bold text-2xl" />
           </button>

@@ -38,7 +38,7 @@ export async function POST(req: Request) {
     throw new Error(`Error in adding the user data to db ==> ${error}`);
   }
 }
-export async function PUT(req: Request) {
+export async function PATCH(req: Request) {
   await connectdb();
   try {
     const reqBody = await req.json();
