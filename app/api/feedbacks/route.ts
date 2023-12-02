@@ -15,8 +15,8 @@ export const POST = async (req: Request, res: Response) => {
   await connectdb();
   try {
     const reqBody = await req.json();
-    const { email, msg } = reqBody;
-    const newFeedback = await Feedback.create({ email, msg });
+    const { email, msg, img } = reqBody;
+    const newFeedback = await Feedback.create({ email, msg, img });
     return NextResponse.json(newFeedback);
   } catch (error) {
     throw new Error("Error in creating a new feedback.");

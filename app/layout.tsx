@@ -6,10 +6,7 @@ import Parent from "./components/Parent";
 import SearchContextProvider from "./context/Search";
 import AuthProvider from "./context/AuthProvider";
 import CartContextProvider from "./context/CartContext";
-import { getServerSession } from "next-auth";
-import { options } from "./api/auth/[...nextauth]/options";
-import { redirect } from "next/navigation";
-import { getUserData } from "@/lib/user/getUser";
+import StoreProvider from "@/redux/StoreProvider";
 
 export const metadata: Metadata = {
   title: "Online Shop",
@@ -21,23 +18,17 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(options);
-  if (!session) {
-    redirect("/");
-  }
-
-  const user = await getUserData(session.user?.email ?? "");
   return (
     <html lang="en">
       <AuthProvider>
         <ThemeProvider>
           <SearchContextProvider>
-            <CartContextProvider>
+            <StoreProvider>
               <body>
-                <Navbar user={user} />
+                <Navbar />
                 <Parent>{children}</Parent>
               </body>
-            </CartContextProvider>
+            </StoreProvider>
           </SearchContextProvider>
         </ThemeProvider>
       </AuthProvider>

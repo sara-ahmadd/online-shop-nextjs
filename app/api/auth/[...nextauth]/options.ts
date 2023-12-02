@@ -5,6 +5,8 @@ import { ProductType, UserType } from "@/types";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import { redirect } from "next/navigation";
+import Swal from "sweetalert2";
 export const options: NextAuthOptions = {
   providers: [
     GoogleProvider({
@@ -35,14 +37,13 @@ export const options: NextAuthOptions = {
           password: data.password as string,
           cart: data.cart as ProductType[],
         };
-
         if (
           user.name !== credentials?.username ||
-          user.password !== credentials?.password
+          user.password !== credentials?.password ||
+          user.email !== credentials.email
         ) {
           return null;
         } else {
-          console.log(user);
           return user;
         }
       },
@@ -50,5 +51,7 @@ export const options: NextAuthOptions = {
   ],
   pages: {
     newUser: "/signup",
+    signIn: "/signin",
+    signOut: "/signout",
   },
 };

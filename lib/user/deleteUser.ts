@@ -7,7 +7,7 @@ export const deleteUserData = async (id: string): Promise<UserType> => {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-    next: { revalidate: 0 },
+  
   });
   const user: UserType = await data.json();
   return user;

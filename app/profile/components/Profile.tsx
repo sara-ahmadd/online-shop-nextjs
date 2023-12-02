@@ -5,15 +5,16 @@ import { useRouter } from "next/navigation";
 import { UserType } from "@/types";
 import { deleteUserData } from "@/lib/user/deleteUser";
 import Btn from "@/app/components/Btn";
+import { signOut } from "next-auth/react";
 
 export default function Profile({ user }: { user: UserType }) {
   const router = useRouter();
-  const deleteAccount = async (): Promise<UserType | undefined> => {
+  const deleteAccount = async () => {
     if (user) {
       const data = await deleteUserData(user._id as string);
-      console.log(data);
-      router.refresh();
-      return data;
+      signOut({ redirect: false }).then(() => {
+        router.push("/");
+      });
     }
   };
   return (

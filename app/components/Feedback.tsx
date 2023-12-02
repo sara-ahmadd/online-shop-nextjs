@@ -10,15 +10,15 @@ import { useRouter } from "next/navigation";
 const initFeed: FeedType = {
   msg: "",
   email: "",
+  img: "",
 };
 export default function Feedback() {
   const router = useRouter();
   const [feed, setFeed] = useState([initFeed]);
   useEffect(() => {
-    router.refresh();
     const getFeedbacks = async () => {
       const res: FeedType[] = await getAllFeedbacks();
-      setFeed(res);
+      setFeed(res.reverse());
       return res;
     };
     getFeedbacks();
@@ -26,7 +26,7 @@ export default function Feedback() {
   return (
     <div className="w-full sm:w-4/5 text-center px-2">
       <>
-        {feed?.length > 1 && (
+        {feed?.length > 0 && feed.every((f) => f.msg !== "") && (
           <>
             <h1 className="font-bold text-2xl">
               Our Clients Thoughts About Us
@@ -39,7 +39,17 @@ export default function Feedback() {
                     className=" flex flex-col justify-center items-start p-3"
                   >
                     <div className="flex gap-2 items-center">
-                      <FaUser />
+                      {f.img ? (
+                        <Image
+                          src={f.img}
+                          alt={f.email}
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      ) : (
+                        <FaUser />
+                      )}
                       <h1>{f.email}</h1>
                     </div>
                     <p className="border rounded w-full p-4 text-start">

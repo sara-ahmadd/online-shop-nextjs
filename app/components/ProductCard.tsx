@@ -8,18 +8,21 @@ import { themeContext } from "../context/Theme";
 import { addProduct } from "@/lib/cart/addProduct";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { setUserCart } from "@/redux/slices/userSlice";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {},
-  });
-  const router = useRouter();
 
+  // const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useAppSelector((state) => state.userReducer);
   const addProductToCart = async () => {
-    const p = await addProduct(session?.user as UserType, product);
-    router.refresh();
+    const p = await addProduct(user as UserType, product).then((res) => {
+      dispatch(setUserCart(res?.cart as ProductType[]));
+    });
+    // router.refresh();
     return p;
   };
   return (

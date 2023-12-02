@@ -3,25 +3,25 @@ import React, { useState, FormEvent, useContext, ChangeEvent } from "react";
 import { themeContext } from "../context/Theme";
 import { useRouter } from "next/navigation";
 import { addNewFeedback } from "@/lib/feedbacks/addNewFeedback";
-
-const initialForm = {
-  email: "",
-  msg: "",
-};
+import { useSession } from "next-auth/react";
 
 export default function FeedbackForm() {
   const router = useRouter();
-  const [form, setForm] = useState(initialForm);
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.id]: e.target.value });
-  };
+  const [message, setMsg] = useState("");
+  const { data: session } = useSession({
+    required: true,
+  });
 
-  const addF = async () => {
-    await addNewFeedback(form);
-  };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await addF().then(() => {});
+    if (session?.user?.image && session.user.email) {
+      await addNewFeedback({
+        msg: message,
+        img: session?.user?.image ?? "/vercel.svg",
+        email: session?.user?.email,
+      });
+    }
+    router.push("/");
   };
 
   const { theme } = useContext(themeContext);
@@ -31,17 +31,6 @@ export default function FeedbackForm() {
       onSubmit={handleSubmit}
       className="w-full flex flex-col justify-center items-start py-5 pr-3"
     >
-      <label htmlFor="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        required
-        name="email"
-        value={form.email}
-        placeholder="Your Email"
-        className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
-        onChange={handleChange}
-      />
       <label htmlFor="message" className="p-0">
         Review
       </label>
@@ -49,9 +38,9 @@ export default function FeedbackForm() {
         placeholder="Your Review"
         required
         id="msg"
-        value={form.msg}
+        value={message}
         className={`${theme && "text-black"} border rounded p-4 w-full`}
-        onChange={(e) => setForm({ ...form, [e.target.id]: e.target.value })}
+        onChange={(e) => setMsg(e.target.value)}
       />
       <button className="btn btn-outline btn-accent mt-3">Submit</button>
     </form>

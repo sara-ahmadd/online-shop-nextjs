@@ -9,10 +9,12 @@ const initCart: ProductType[] = [];
 type UserContextType = {
   cart: ProductType[];
   handleCart: (t: ProductType[]) => void;
+  user: UserType;
 };
 const initContext: UserContextType = {
   cart: [],
   handleCart: (arr: ProductType[]) => {},
+  user: { email: "", password: "", image: "", cart: [] },
 };
 
 export const CartContext = createContext(initContext);
@@ -24,22 +26,31 @@ export default function CartContextProvider({
 }) {
   const { data: session } = useSession({
     required: true,
-    onUnauthenticated() {},
+    onUnauthenticated() {
+      alert("Signin Or Signup");
+    },
   });
-  const user = session?.user;
+  // const user = session?.user as UserType;
+  const [user, setUser] = useState(initContext.user);
   const [cart, setCart] = useState(initCart);
   const handleCart = (arr: ProductType[]) => {
     setCart(arr);
   };
   useEffect(() => {
+    if (session) {
+      setUser(session?.user as UserType);
+    }
     const getCart = async () => {
       const userFromDb = await getUserData(user?.email as string);
+      if (userFromDb) {
+        setUser(userFromDb);
+      }
       setCart(userFromDb?.cart ?? []);
     };
     getCart();
-  }, [user?.email]);
+  }, [session?.user]);
   return (
-    <CartContext.Provider value={{ cart, handleCart }}>
+    <CartContext.Provider value={{ cart, handleCart, user }}>
       {children}
     </CartContext.Provider>
   );

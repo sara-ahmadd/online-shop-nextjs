@@ -12,15 +12,16 @@ export type FeedType = {
   _id?: string;
   msg: string;
   email: string;
+  img: string;
 };
 export type ParamsType = {
   params: { productId: string };
 };
 export type UserType = {
   _id?: string;
-  email?: string | null;
-  image?: string | null;
-  name?: string | null;
-  password?: string | null;
+  email: string;
+  image: string;
+  name?: string;
+  password?: string;
   cart?: ProductType[];
 };

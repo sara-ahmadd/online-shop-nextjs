@@ -3,6 +3,7 @@ import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { themeContext } from "../context/Theme";
 import { UserType } from "@/types";
 import { addUser } from "@/lib/user/addNewUser";
+import { useRouter } from "next/navigation";
 const initUser: UserType = {
   email: "",
   password: "",
@@ -14,12 +15,14 @@ const initUser: UserType = {
 export default function SignUP() {
   const { theme } = useContext(themeContext);
   const [form, setForm] = useState(initUser);
+  const router = useRouter();
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const data = await addUser(form);
     const user = await data;
     console.log(user);
     setForm(initUser);
+    router.push("/signin");
   };
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({

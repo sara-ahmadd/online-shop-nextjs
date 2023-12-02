@@ -7,15 +7,16 @@ import { emptyCart } from "@/lib/cart/emptyCart";
 import Btn from "@/app/components/Btn";
 import { redirect, useRouter } from "next/navigation";
 import PiecesCounter from "./PiecesCounter";
+import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { useAppSelector } from "@/redux/store";
+import { setUserCart } from "@/redux/slices/userSlice";
 
-const Cart = ({
-  userFromDb,
-  cart,
-}: {
-  userFromDb: UserType;
-  cart: ProductType[];
-}) => {
+const Cart = () => {
   const router = useRouter();
+  const cart = useAppSelector((state) => state.userReducer.cart);
+  const user = useAppSelector((state) => state.userReducer);
+  const dispatch = useDispatch();
   const totalCost = () => {
     let sum = 0;
     cart?.map((p) => {
@@ -32,12 +33,26 @@ const Cart = ({
     return pieces;
   };
   const deleteProduct = async (p: ProductType, u: UserType) => {
-    await deleteProductFromCart(p, u);
-    router.refresh();
+    await deleteProductFromCart(p, u).then((res) => {
+      dispatch(setUserCart(res as ProductType[]));
+    });
+    // router.refresh();
   };
   const clearCart = async () => {
-    await emptyCart(userFromDb);
-    router.refresh();
+    await emptyCart(user).then((res) => {
+      dispatch(setUserCart(res?.cart as ProductType[]));
+    });
+    // router.refresh();
+  };
+  const confirmCart = () => {
+    Swal.fire({
+      title: "Shipping your order...",
+    }).then(async () => {
+      await emptyCart(user).then((res) => {
+        dispatch(setUserCart(res?.cart as ProductType[]));
+      });
+      // router.refresh();
+    });
   };
   return (
     <div className="pt-20 flex justify-center items-center pb-20">
@@ -69,9 +84,9 @@ const Cart = ({
                     </td>
                     <td>{i.title}</td>
                     <td className="flex gap-2 justify-center items-center">
-                      <PiecesCounter user={userFromDb} product={i} sign="-" />
+                      <PiecesCounter user={user} product={i} sign="-" />
                       {i.quantity}
-                      <PiecesCounter user={userFromDb} product={i} sign="+" />
+                      <PiecesCounter user={user} product={i} sign="+" />
                     </td>
                     <td>${i.price}</td>
                     <td>{i.category}</td>
@@ -79,7 +94,7 @@ const Cart = ({
                       <Btn
                         val="Remove"
                         handleFunc={() => {
-                          deleteProduct(i, userFromDb);
+                          deleteProduct(i, user);
                         }}
                       />
                     </td>
@@ -98,7 +113,9 @@ const Cart = ({
                     <span>Total Pieces: {totalPieces()}</span>
                   </td>
                   <td colSpan={2} className="flex flex-col gap-2 ">
-                    <button className="btn btn-accent">Confirm</button>
+                    <button onClick={confirmCart} className="btn btn-accent">
+                      Confirm
+                    </button>
                   </td>
                 </tr>
               </tbody>

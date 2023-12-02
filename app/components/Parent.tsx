@@ -1,10 +1,6 @@
 "use client";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { themeContext } from "./../context/Theme";
-import { UserContext } from "../context/UserContext";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { UserType } from "@/types";
 
 export default function Parent({ children }: { children: React.ReactNode }) {
   const { theme } = useContext(themeContext);

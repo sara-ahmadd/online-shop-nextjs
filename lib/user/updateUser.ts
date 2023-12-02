@@ -10,7 +10,7 @@ export const updateUserData = async (u: UserType): Promise<UserType> => {
       "Access-Control-Allow-Origin": "*",
     },
     body: JSON.stringify(u),
-    next: { revalidate: 0 },
+  
   });
   const res: UserType = await user.json();
   return res;
