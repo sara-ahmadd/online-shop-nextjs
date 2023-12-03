@@ -4,22 +4,23 @@ import { getUserData } from "../user/getUser";
 
 export const addProduct = async (user: UserType, product: ProductType) => {
   const res = await getUserData(user.email ?? "");
-  if (product) {
-    const productIndex = res?.cart?.findIndex(
-      (i) => i._id === product._id
-    ) as number;
-    const cartCopy = res.cart?.slice();
-    if (productIndex !== -1) {
-      cartCopy?.splice(productIndex, 1, {
-        ...product,
-        quantity: (product.quantity || 0) + 1,
-      });
-    } else {
-      cartCopy?.push({ ...product, quantity: 1 });
-    }
-    const u = { ...res, cart: cartCopy };
+  const matchedProduct = res.cart?.find((p) => p._id === product._id);
+  if (matchedProduct !== undefined) {
+    const newCart = res.cart?.filter((p) => p._id !== product._id);
+    const finalCart = [
+      ...(newCart ?? []),
+      {
+        ...matchedProduct,
+        quantity: (matchedProduct.quantity as number) + 1,
+      },
+    ];
+    const u = { ...res, cart: finalCart };
+    const updatedUser = await updateUserData(u);
+    return updatedUser;
+  } else {
+    const updatedCart = [...(res.cart ?? []), { ...product, quantity: 1 }];
+    const u = { ...res, cart: updatedCart };
     const updatedUser = await updateUserData(u);
     return updatedUser;
   }
-  return res;
 };

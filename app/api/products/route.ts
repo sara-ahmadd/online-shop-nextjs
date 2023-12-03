@@ -1,7 +1,7 @@
 import Product from "@/models/product";
 import { connectdb } from "@/database/mongodb";
 import { ProductType } from "@/types";
-import mongoose from "mongoose";
+import mongoose, { Mongoose, Schema } from "mongoose";
 import { NextResponse } from "next/server";
 
 export const GET = async (req: Request) => {
@@ -9,10 +9,9 @@ export const GET = async (req: Request) => {
   try {
     const { searchParams } = new URL(req.url);
     if (searchParams.has("id")) {
-      const data: ProductType = (await Product.findById(
-        searchParams.get("id")
-      )) as ProductType;
-      return NextResponse.json(data);
+      const id = searchParams.get("id");
+      const data = await Product.findById(id);
+      return NextResponse.json( data );
     } else if (searchParams.has("search")) {
       const txt = searchParams.get("search") as string;
       const data: ProductType[] = await Product.find();

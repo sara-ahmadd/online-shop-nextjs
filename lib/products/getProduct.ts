@@ -3,7 +3,7 @@ import { ProductType } from "@/types";
 const url = "http://localhost:3000/api/products";
 export const getProduct = async (id: string): Promise<ProductType> => {
   try {
-    const res = await fetch(url + `?id=${id}`, {
+    const res = await fetch(`${url}?id=${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

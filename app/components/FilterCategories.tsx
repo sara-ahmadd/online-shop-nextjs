@@ -3,7 +3,7 @@ import Btn from "./Btn";
 import Categories from "./Categories";
 import { getCategoryProducts } from "@/lib/products/getCategoryProducts";
 import { ProductType } from "@/types";
-
+import { FaFilter } from "react-icons/fa";
 function FilterCategories({
   handleProducts,
 }: {
@@ -20,9 +20,15 @@ function FilterCategories({
   };
 
   return (
-    <div className="w-full flex flex-col justify-between items-start h-32">
-      <Btn val="Filter" handleFunc={handleCategories} />
-      <div className="w-full z-50">
+    <div
+      className={`w-full flex flex-col justify-between items-start h-32 ${
+        showCategories ? "h-32" : "h-5"
+      }`}
+    >
+      <button onClick={handleCategories} className="btn btn-outline btn-accent">
+        <FaFilter />
+      </button>
+      <div className={`w-full z-50 `}>
         <Categories show={showCategories} getCategoryP={getCatProducts} />
       </div>
     </div>

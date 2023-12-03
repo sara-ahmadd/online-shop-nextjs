@@ -21,6 +21,9 @@ const ProductSchema = new Schema({
   newProduct: {
     type: Boolean,
   },
+  _id: {
+    type: String,
+  },
 });
 const Product = models.Product || model("Product", ProductSchema);
 export default Product;

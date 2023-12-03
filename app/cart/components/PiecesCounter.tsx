@@ -16,8 +16,8 @@ export default function PiecesCounter({
   const router = useRouter();
   return (
     <button
-      onClick={() => {
-        handlePieces(product, user, sign).then(() => {
+      onClick={async () => {
+        await handlePieces(product, user, sign).then(() => {
           router.refresh();
         });
       }}

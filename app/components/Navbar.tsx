@@ -1,8 +1,8 @@
 "use client";
 import Link from "next/link";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ThemeBtn from "./ThemeBtn";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import { FaUser } from "react-icons/fa";
 import { themeContext } from "../context/Theme";
 import Image from "next/image";
@@ -14,14 +14,16 @@ import { BsShopWindow } from "react-icons/bs";
 import { GiShoppingCart } from "react-icons/gi";
 import { useSession } from "next-auth/react";
 import { getUserData } from "@/lib/user/getUser";
-import { CartContext } from "../context/CartContext";
-import { useAppSelector } from "@/redux/store";
-
-export default function Navbar() {
+export const initUser: UserType = {
+  name: "",
+  email: "",
+  image: "",
+  cart: [],
+};
+export default function Navbar({ user }: { user: UserType }) {
   const { theme } = useContext(themeContext);
-  const user = useAppSelector((state) => state.userReducer);
-  const cart = useAppSelector((state) => state.userReducer.cart);
   const path = usePathname();
+
   const getPieces = (c: ProductType[]) => {
     let sum = 0;
     c?.map((p) => {
@@ -29,21 +31,7 @@ export default function Navbar() {
     });
     return sum;
   };
-  // const { data: session } = useSession({
-  //   required: true,
-  //   onUnauthenticated: () => {
-  //     redirect("/signin");
-  //   },
-  // });
-  // const [user, setUser] = useState(session?.user);
-  // const [cart, setCart] = useState([] as ProductType[]);
-  // useEffect(() => {
-  //   async () => {
-  //     const userFromDb = await getUserData(session?.user?.email ?? "");
-  //     setUser(userFromDb);
-  //     setCart(userFromDb.cart ?? []);
-  //   };
-  // }, [session?.user]);
+
   return (
     <nav
       className={`flex md:flex-col items-center justify-between md:justify-start gap-5 md:gap-14 p-2 min-w-full md:min-w-max h-14 md:h-4/5 bottom-3 md:top-10 left-1/2 md:left-1 -translate-x-1/2 fixed bg-gradient-to-b from-teal-500/40 to-teal-300/50  backdrop-blur-md rounded-md ml-0 md:ml-6  z-50 ${
@@ -74,7 +62,7 @@ export default function Navbar() {
             <ImHome />
           </Link>
         </li>
-        {user && (
+        {user && user.email && (
           <li>
             <Link
               href={"/dashboard"}
@@ -121,20 +109,20 @@ export default function Navbar() {
               tabIndex={0}
               className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {user && (
+              {user && user.email && (
                 <>
                   <li>
                     <Link href={"/profile"}>Profile</Link>
                   </li>
                   <li>
-                    <Link href={"/signout"}>Signout</Link>
+                    <Link href={"/api/auth/signout"}>Signout</Link>
                   </li>
                 </>
               )}
-              {!user && (
+              {!user?.email && (
                 <>
                   <li>
-                    <Link href={"/signin"}>Signin</Link>
+                    <Link href={"/api/auth/signin"}>Signin</Link>
                   </li>
                   <li>
                     <Link href={"/signup"}>Signup</Link>
@@ -153,7 +141,7 @@ export default function Navbar() {
               <GiShoppingCart className="w-7 h-7 font-bold" />
             </span>
             <span className="absolute -right-1 -top-2 text-sm bg-red-800 w-5 h-5 rounded-full flex justify-center items-center text-white">
-              {getPieces(cart ?? [])}
+              {getPieces(user?.cart ?? [])}
             </span>
           </Link>
         </li>

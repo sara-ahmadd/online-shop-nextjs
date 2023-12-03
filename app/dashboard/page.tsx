@@ -1,12 +1,7 @@
 import React from "react";
 import DashBoard from "./components/DashBoard";
-import { ProductType } from "@/types";
-import Product from "@/models/product";
-import { connectdb } from "@/database/mongodb";
 import Refresh from "../components/Refresh";
-import { getFilteredProducts } from "@/lib/products/getFilteredProducts";
-import Categories from "../components/Categories";
-import Searchbar from "../components/Searchbar";
+
 export default async function DashboardPage() {
   return (
     <div className="mx-auto flex flex-col items-center gap-5 relative">

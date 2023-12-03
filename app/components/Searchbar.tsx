@@ -1,20 +1,7 @@
 "use client";
-import React, {
-  useState,
-  ChangeEvent,
-  FormEvent,
-  useContext,
-  useEffect,
-} from "react";
+import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { FaSearchengin } from "react-icons/fa6";
 import { themeContext } from "../context/Theme";
-import { getFilteredProducts } from "@/lib/products/getFilteredProducts";
-import { getAllProducts } from "@/lib/products/getAllProducts";
-import { SearchContext } from "../context/Search";
-import { ProductType } from "./../../types";
-import Btn from "./Btn";
-import Categories from "./Categories";
-import { getCategoryProducts } from "@/lib/products/getCategoryProducts";
 
 export default function Searchbar({
   search,

@@ -1,10 +1,11 @@
 "use client";
 import { ProductType } from "@/types";
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaCartPlus } from "react-icons/fa";
 import { themeContext } from "../context/Theme";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export const initProduct: ProductType = {
   _id: "",
@@ -18,6 +19,7 @@ export const initProduct: ProductType = {
 export default function ProductDetails({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
   const router = useRouter();
+
   return (
     <div className="w-11/12 flex flex-col mx-auto justify-center items-center gap-5">
       <button
@@ -33,8 +35,8 @@ export default function ProductDetails({ product }: { product: ProductType }) {
       >
         <figure className="relative h-96 w-full sm:w-1/2">
           <Image
-            src={product.image.length > 0 ? product.image : "/spinner.gif"}
-            alt={product.title}
+            src={product?.image?.length > 0 ? product?.image : "/spinner.gif"}
+            alt={product?.title ?? ""}
             fill
             sizes="max-width:100%; height:100%"
             className="rounded object-cover"
@@ -42,18 +44,20 @@ export default function ProductDetails({ product }: { product: ProductType }) {
         </figure>
         <div className="card-body p-2 sm:p-8">
           <h2 className="card-title">
-            {product.title}
-            {product.newProduct ? (
+            {product?.title ?? ""}
+            {product?.newProduct ? (
               <div className="badge badge-secondary">NEW</div>
             ) : null}
           </h2>
-          <p>{product.description}</p>
+          <p>{product?.description ?? ""}</p>
           <div className="flex justify-between items-center">
-            <p className="font-bold text-xl">${product.price}</p>
+            <p className="font-bold text-xl">${product?.price ?? 0}</p>
             <FaCartPlus className="font-bold text-2xl" />
           </div>
           <div className="card-actions justify-end">
-            <div className="badge badge-outline">{product.category}</div>
+            <div className="badge badge-outline">
+              {product?.category ?? "cat"}
+            </div>
           </div>
         </div>
       </div>

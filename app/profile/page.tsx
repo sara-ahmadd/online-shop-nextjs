@@ -3,9 +3,9 @@ import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
 import { options } from "../api/auth/[...nextauth]/options";
 import { redirect } from "next/navigation";
-import { getUserData } from "@/lib/user/getUser";
 import Profile from "./components/Profile";
 import { UserType } from "@/types";
+import Feedback from "../components/Feedback";
 
 export default async function ProfilePage() {
   const session = await getServerSession(options);
@@ -13,10 +13,10 @@ export default async function ProfilePage() {
     redirect("/api/auth/signin?callbackUrl=/profile");
   }
 
-  // const user = await getUserData(session.user?.email ?? "");
   return (
     <div className="flex flex-col justify-center items-center p-5 mx-auto gap-4">
       <Profile user={session?.user as UserType} />
+      <Feedback />
     </div>
   );
 }

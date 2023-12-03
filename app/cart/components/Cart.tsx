@@ -1,22 +1,17 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ProductType, UserType } from "@/types";
 import Image from "next/image";
 import { deleteProductFromCart } from "@/lib/cart/deleteItemFromCart";
 import { emptyCart } from "@/lib/cart/emptyCart";
 import Btn from "@/app/components/Btn";
-import { redirect, useRouter } from "next/navigation";
+import {  useRouter } from "next/navigation";
 import PiecesCounter from "./PiecesCounter";
 import Swal from "sweetalert2";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppSelector } from "@/redux/store";
-import { setUserCart } from "@/redux/slices/userSlice";
 
-const Cart = () => {
+const Cart = ({ user, cart }: { user: UserType; cart: ProductType[] }) => {
   const router = useRouter();
-  const cart = useAppSelector((state) => state.userReducer.cart);
-  const user = useAppSelector((state) => state.userReducer);
-  const dispatch = useDispatch();
+
   const totalCost = () => {
     let sum = 0;
     cart?.map((p) => {
@@ -33,25 +28,21 @@ const Cart = () => {
     return pieces;
   };
   const deleteProduct = async (p: ProductType, u: UserType) => {
-    await deleteProductFromCart(p, u).then((res) => {
-      dispatch(setUserCart(res as ProductType[]));
+    await deleteProductFromCart(p, u).then(() => {
+      router.refresh();
     });
-    // router.refresh();
   };
   const clearCart = async () => {
-    await emptyCart(user).then((res) => {
-      dispatch(setUserCart(res?.cart as ProductType[]));
+    await emptyCart(user).then(() => {
+      router.refresh();
     });
-    // router.refresh();
   };
   const confirmCart = () => {
     Swal.fire({
       title: "Shipping your order...",
     }).then(async () => {
-      await emptyCart(user).then((res) => {
-        dispatch(setUserCart(res?.cart as ProductType[]));
-      });
-      // router.refresh();
+      await emptyCart(user);
+      router.refresh();
     });
   };
   return (
@@ -62,7 +53,6 @@ const Cart = () => {
             <table className="table-xs sm:table-lg">
               <thead>
                 <tr className=" font-bold text-lg">
-                  <td>Id</td>
                   <td>Image</td>
                   <td>Title</td>
                   <td>Pieces</td>

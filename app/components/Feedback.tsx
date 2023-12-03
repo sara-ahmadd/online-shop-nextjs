@@ -13,7 +13,6 @@ const initFeed: FeedType = {
   img: "",
 };
 export default function Feedback() {
-  const router = useRouter();
   const [feed, setFeed] = useState([initFeed]);
   useEffect(() => {
     const getFeedbacks = async () => {
@@ -22,7 +21,7 @@ export default function Feedback() {
       return res;
     };
     getFeedbacks();
-  }, [router]);
+  }, []);
   return (
     <div className="w-full sm:w-4/5 text-center px-2">
       <>

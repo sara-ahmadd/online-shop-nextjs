@@ -1,12 +1,8 @@
 import Intro from "./components/Intro";
-import Feedback from "./components/Feedback";
 import Footer from "./components/Footer";
-import { Inter } from "next/font/google";
-import Categories from "./components/Categories";
-import Searchbar from "./components/Searchbar";
 import ProductsList from "./components/ProductsList";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main
       className={`max-w-screen flex flex-col justify-between items-center min-h-screen`}
@@ -14,13 +10,12 @@ export default function Home() {
       <Intro />
       <div
         id="products"
-        className="mx-auto flex flex-col items-center gap-5 pt-5 pb-10 px-0 sm:px-1"
+        className="w-full flex flex-col items-center gap-3 pt-5 pb-10 px-0 sm:px-1"
       >
-        <div className="pt-16 flex flex-col items-center gap-5">
+        <div className="w-full pt-10 flex flex-col items-center gap-5">
           <ProductsList />
         </div>
       </div>
-      <Feedback />
       <Footer />
     </main>
   );

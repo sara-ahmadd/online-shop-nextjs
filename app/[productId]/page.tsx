@@ -1,5 +1,7 @@
+import { options } from "@/app/api/auth/[...nextauth]/options";
 import ProductDetails from "@/app/components/ProductDetails";
 import { connectdb } from "@/database/mongodb";
+import { getProduct } from "@/lib/products/getProduct";
 import Product from "@/models/product";
 import { ParamsType, ProductType } from "@/types";
 import React from "react";
@@ -7,24 +9,12 @@ import React from "react";
 export default async function ProductPage({ params }: ParamsType) {
   const { productId } = params;
   await connectdb();
-  const product: ProductType = (await Product.findById(
-    productId
-  )) as ProductType;
-  const { _id, title, image, category, description, price, newProduct } =
-    product;
+  const products = await Product.find();
+  const product = products.find((p) => p._id === productId);
+
   return (
     <div className="page w-screen h-screen flex flex-col items-center justify-center gap-3">
-      <ProductDetails
-        product={{
-          _id: product._id?.toString(),
-          title,
-          image,
-          category,
-          description,
-          price,
-          newProduct,
-        }}
-      />
+      <ProductDetails product={product} />
     </div>
   );
 }

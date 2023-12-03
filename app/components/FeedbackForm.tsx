@@ -1,7 +1,7 @@
 "use client";
-import React, { useState, FormEvent, useContext, ChangeEvent } from "react";
+import React, { useState, FormEvent, useContext } from "react";
 import { themeContext } from "../context/Theme";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { addNewFeedback } from "@/lib/feedbacks/addNewFeedback";
 import { useSession } from "next-auth/react";
 
@@ -10,6 +10,9 @@ export default function FeedbackForm() {
   const [message, setMsg] = useState("");
   const { data: session } = useSession({
     required: true,
+    onUnauthenticated() {
+      redirect("/api/auth/signin?callbackUrl=/profile");
+    },
   });
 
   const handleSubmit = async (e: FormEvent) => {
@@ -21,7 +24,7 @@ export default function FeedbackForm() {
         email: session?.user?.email,
       });
     }
-    router.push("/");
+    router.push("/profile");
   };
 
   const { theme } = useContext(themeContext);

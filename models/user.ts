@@ -10,14 +10,12 @@ const UserModel = new UserSchema({
   },
   password: {
     type: String,
-    required: true,
   },
   image: {
     type: String,
   },
   name: {
     type: String,
-    required: true,
   },
   cart: {
     type: Array,

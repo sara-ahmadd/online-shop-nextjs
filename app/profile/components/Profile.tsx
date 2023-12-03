@@ -11,10 +11,9 @@ export default function Profile({ user }: { user: UserType }) {
   const router = useRouter();
   const deleteAccount = async () => {
     if (user) {
-      const data = await deleteUserData(user._id as string);
-      signOut({ redirect: false }).then(() => {
-        router.push("/");
-      });
+      await deleteUserData(user._id as string);
+      signOut();
+      router.push("/");
     }
   };
   return (

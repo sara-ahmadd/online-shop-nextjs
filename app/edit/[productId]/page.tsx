@@ -9,7 +9,8 @@ import Product from "@/models/product";
 export default async function EditProduct({ params }: ParamsType) {
   const { productId } = params;
   await connectdb();
-  const initProduct = await Product.findById(productId);
+  const initProds = await Product.find();
+  const initProduct = initProds.find((p) => p._id === productId);
   // const initProduct = await getProduct(productId);
 
   const editAProduct = async (product: ProductType): Promise<ProductType> => {
