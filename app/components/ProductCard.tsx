@@ -29,42 +29,35 @@ export default function ProductCard({ product }: { product: ProductType }) {
   };
   return (
     <div
-      className={`flex flex-col w-96 h-96 justify-start items-center bg-slate-50
-       ${
-         theme ? "text-black" : undefined
-       } card-animation border-2 border-teal-500 rounded-lg`}
+      className={`relative flex flex-col w-80 h-96 justify-start items-center bg-slate-50
+       ${theme ? "text-black" : undefined} card-animation`}
     >
       <Link
         href={`/${product._id?.toString()}`}
-        className="card-flash h-80 w-80"
+        className="card-flash h-80 w-full"
       >
-        <figure>
-          <Image
-            src={product.image.length > 0 ? product.image : "/spinner.gif"}
-            alt={product.title}
-            fill={true}
-            className="rounded object-cover"
-          />
-        </figure>
+        <Image
+          src={product.image.length > 0 ? product.image : "/spinner.gif"}
+          alt={product.title}
+          fill={true}
+          className=" object-cover"
+        />
       </Link>
-      <div className="flex flex-col justify-center items-start p-2 sm:p-8 h-56 gap-2">
+      <div className=" w-full px-2 flex flex-col justify-start items-start">
+        <h1 className=" text-lg text-slate-500 p-0">
+          {product.category ?? ""}
+        </h1>
         <h2 className="flex justify-between items-center w-full">
-          {product.title}
+          <span className="text-2xl font-bold p-0">{product.title}</span>
           {product.newProduct ? (
             <div className="badge badge-secondary">NEW</div>
           ) : null}
         </h2>
-        <div className="flex justify-between items-center w-11/12">
-          <p className="font-bold text-xl w-20">${product.price}</p>
-          <button
-            className="w-20 h-28 cursor-pointer"
-            onClick={addProductToCart}
-          >
+        <p className="text-xl w-20 text-slate-500">${product.price}</p>
+        <div className="absolute left-0 top-0 flex justify-between items-center w-fit p-3 bg-white z-50">
+          <button className="w-10 cursor-pointer" onClick={addProductToCart}>
             <FaCartPlus className="font-bold text-2xl" />
           </button>
-        </div>
-        <div className="card-actions justify-end">
-          <div className="badge badge-outline">{product.category}</div>
         </div>
       </div>
     </div>
