@@ -9,6 +9,8 @@ import { getServerSession } from "next-auth";
 import { options } from "./api/auth/[...nextauth]/options";
 import { getUserData } from "@/lib/user/getUser";
 import { redirect } from "next/navigation";
+import Footer from "./components/Footer";
+import SubscribeSection from "./components/SubscribeSection";
 
 export const metadata: Metadata = {
   title: "Online Shop",
@@ -31,6 +33,7 @@ export default async function RootLayout({
             <body>
               <Navbar user={userFromDb} />
               <Parent>{children}</Parent>
+              
             </body>
           </SearchContextProvider>
         </ThemeProvider>

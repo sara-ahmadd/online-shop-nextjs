@@ -21,8 +21,8 @@ const ProductSchema = new Schema({
   newProduct: {
     type: Boolean,
   },
-  _id: {
-    type: String,
+  sale: {
+    type: Number,
   },
 });
 const Product = models.Product || model("Product", ProductSchema);

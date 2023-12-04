@@ -27,7 +27,7 @@ export default function Feedback() {
       <>
         {feed?.length > 0 && feed.every((f) => f.msg !== "") && (
           <>
-            <h1 className="font-bold text-2xl">
+            <h1 className="font-bold text-2xl py-10">
               Our Clients Thoughts About Us
             </h1>
             <div className="h-80 overflow-scroll">

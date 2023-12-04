@@ -1,11 +1,15 @@
 "use client";
-import { ProductType } from "@/types";
+import { ProductType, UserType } from "@/types";
 import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
 import { FaCartPlus } from "react-icons/fa";
 import { themeContext } from "../context/Theme";
 import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import PiecesCounter from "../cart/components/PiecesCounter";
+import { initUser } from "./Navbar";
+import { getUserData } from "@/lib/user/getUser";
+import { addProduct } from "@/lib/cart/addProduct";
 
 export const initProduct: ProductType = {
   _id: "",
@@ -16,49 +20,80 @@ export const initProduct: ProductType = {
   description: "",
   newProduct: false,
 };
-export default function ProductDetails({ product }: { product: ProductType }) {
+export default function ProductDetails({
+  product,
+  user,
+}: {
+  product: ProductType;
+  user: UserType;
+}) {
   const { theme } = useContext(themeContext);
   const router = useRouter();
 
+  const addProductToCart = async () => {
+    const p = await addProduct(user as UserType, product);
+    router.refresh();
+    return p;
+  };
+
+  const [cart, setCart] = useState(user.cart);
+  const currentProductinUserCart =
+    cart && product && cart.find((i) => i._id === product._id)?.quantity;
+
+  useEffect(() => {
+    setCart(user.cart);
+  }, [user.cart]);
+
   return (
-    <div className="w-11/12 flex flex-col mx-auto justify-center items-center gap-5">
+    <div
+      className={`w-11/12 pt-10 h-fit flex flex-col mx-auto justify-center items-center gap-5 ${
+        theme ? "text-white" : "text-black"
+      }`}
+    >
       <button
         onClick={() => router.back()}
         className="btn btn-accent btn-outline w-fit"
       >
         Back
       </button>
-      <div
-        className={`card card-compact sm:card-side bg-base-100 shadow-xl ${
-          theme ? "text-black" : undefined
-        } w-full`}
-      >
-        <figure className="relative h-96 w-full sm:w-1/2">
+
+      <div className="py-20 md:py-5 w-full h-11/12 flex flex-wrap md:flex-nowrap justify-center items-start gap-5">
+        <div className="w-full sm:w-fit">
           <Image
-            src={product?.image?.length > 0 ? product?.image : "/spinner.gif"}
-            alt={product?.title ?? ""}
-            fill
-            sizes="max-width:100%; height:100%"
-            className="rounded object-cover"
+            src={product?.image ?? "/spinner.gif"}
+            alt={product?.title}
+            width={400}
+            height={300}
           />
-        </figure>
-        <div className="card-body p-2 sm:p-8">
-          <h2 className="card-title">
-            {product?.title ?? ""}
-            {product?.newProduct ? (
-              <div className="badge badge-secondary">NEW</div>
-            ) : null}
-          </h2>
-          <p>{product?.description ?? ""}</p>
-          <div className="flex justify-between items-center">
-            <p className="font-bold text-xl">${product?.price ?? 0}</p>
-            <FaCartPlus className="font-bold text-2xl" />
-          </div>
-          <div className="card-actions justify-end">
-            <div className="badge badge-outline">
-              {product?.category ?? "cat"}
+        </div>
+        <div
+          className={`w-full sm:w-1/2 flex flex-col justify-start items-start gap-2 border-l-2 ${
+            theme ? "border-slate-50" : "border-slate-800"
+          } h-full px-5`}
+        >
+          <h2 className="text-xl text-slate-500">{product?.category}</h2>
+          <hr />
+          <h1 className="text-2xl font-semibold">{product?.title}</h1>
+          <hr />
+          <h1 className="text-2xl font-semibold">
+            ${product?.price}
+            <span className="text-sm text-slate-500">&Free Shipping</span>
+          </h1>
+          <hr />
+          <h1 className="text-2xl font-semibold">-{product.sale} %</h1>
+          <hr />
+
+          <div className="flex w-full justify-start items-center gap-4">
+            <div className="w-1/2 flex justify-center items-center gap-3">
+              <PiecesCounter user={user} product={product} sign="-" />
+              <>{currentProductinUserCart ?? 0}</>
+              <PiecesCounter user={user} product={product} sign="+" />
             </div>
+            <button className="w-10 cursor-pointer" onClick={addProductToCart}>
+              <FaCartPlus className="font-bold text-2xl" />
+            </button>
           </div>
+          <hr />
         </div>
       </div>
     </div>

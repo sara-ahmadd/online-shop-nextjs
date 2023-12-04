@@ -7,6 +7,7 @@ export type ProductType = {
   description: string;
   newProduct?: boolean;
   quantity?: number;
+  sale?: number | null;
 };
 export type FeedType = {
   _id?: string;

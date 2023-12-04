@@ -25,8 +25,8 @@ export default function Categories({
 
   return (
     <div
-      className={`flex ${
-        show ? " opacity-100 h-16" : " opacity-0 h-0"
+      className={`flex flex-wrap ${
+        show ? " opacity-100 h-fit" : " hidden"
       } justify-center gap-4 items-center p-3 border-2 border-teal-500 rounded-md transition-opacity px-1`}
     >
       {categories?.length > 0
@@ -34,7 +34,7 @@ export default function Categories({
             <button
               onClick={() => getCategoryP(c.toLowerCase())}
               className={` ${
-                show ? " opacity-100" : " opacity-0 h-0"
+                show ? " opacity-100" : "h-0 hidden"
               } text-center bg-teal-400/30 backdrop-blur-md w-fit h-14 flex justify-center items-center py-1 px-3 rounded font-bold`}
               key={c}
             >

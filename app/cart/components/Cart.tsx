@@ -53,6 +53,7 @@ const Cart = ({ user, cart }: { user: UserType; cart: ProductType[] }) => {
             <table className="table-xs sm:table-lg">
               <thead>
                 <tr className=" font-bold text-lg">
+                  <td></td>
                   <td>Image</td>
                   <td>Title</td>
                   <td>Pieces</td>

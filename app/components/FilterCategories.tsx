@@ -22,7 +22,7 @@ function FilterCategories({
   return (
     <div
       className={`w-full flex flex-col justify-between items-start h-32 ${
-        showCategories ? "h-32" : "h-5"
+        showCategories ? "h-fit" : "h-5"
       }`}
     >
       <button onClick={handleCategories} className="btn btn-outline btn-accent">

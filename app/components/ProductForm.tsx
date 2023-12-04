@@ -10,6 +10,7 @@ const emptyForm = {
   price: 0,
   description: "",
   newProduct: false,
+  sale: null,
 };
 export default function AddProductForm({
   initialForm,
@@ -28,7 +29,6 @@ export default function AddProductForm({
     functionality(form);
     setForm(emptyForm);
     router.refresh();
-    router.push("/dashboard");
   };
   const { theme } = useContext(themeContext);
 
@@ -66,6 +66,17 @@ export default function AddProductForm({
         required
         name="category"
         value={form.category}
+        placeholder="Products Category"
+        className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
+        onChange={handleChange}
+      />
+      <label htmlFor="sale">Have sale?</label>
+      <input
+        type="number"
+        id="sale"
+        required
+        name="sale"
+        value={form.sale ?? 0}
         placeholder="Products Category"
         className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
         onChange={handleChange}

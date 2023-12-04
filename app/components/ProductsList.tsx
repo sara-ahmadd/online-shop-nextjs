@@ -1,11 +1,11 @@
 "use client";
-import { ProductType } from "@/types";
 import React from "react";
 import ProductCard from "./ProductCard";
 import FilterCategories from "./FilterCategories";
 import Searchbar from "./Searchbar";
 import useGetSearchedProducts from "@/hooks/useGetSearchedProducts";
 import SpecialHeading from "./SpecialHeading";
+import Image from "next/image";
 
 export default function ProductsList({
   text_1,
@@ -25,30 +25,48 @@ export default function ProductsList({
         <FilterCategories handleProducts={handleProducts} />
       </div>
 
-      <div className="flex justify-start flex-wrap  pl-3 gap-2 items-center w-full h-full ">
-        {products?.length > 0 ? (
-          products.map((p) => {
-            const { title, category, image, description, price, newProduct } =
-              p;
-            return (
-              <ProductCard
-                key={p._id?.toString()}
-                product={{
-                  _id: p._id?.toString(),
-                  title,
-                  category,
-                  image,
-                  description,
-                  price,
-                  newProduct,
-                }}
-              />
-            );
-          })
-        ) : (
-          <h1 className="font-bold text-4xl italic">No Products to display!</h1>
-        )}
-      </div>
+      {products &&
+      products.length > 0 &&
+      products.every((p) => p.title !== "") ? (
+        <div className="flex justify-center flex-wrap  pl-3 gap-2 items-center w-full h-full ">
+          {products?.length > 0 ? (
+            products.map((p) => {
+              const {
+                title,
+                category,
+                image,
+                description,
+                price,
+                newProduct,
+                sale,
+              } = p;
+              return (
+                <ProductCard
+                  key={p._id?.toString()}
+                  product={{
+                    _id: p._id?.toString(),
+                    title,
+                    category,
+                    image,
+                    description,
+                    price,
+                    newProduct,
+                    sale,
+                  }}
+                />
+              );
+            })
+          ) : (
+            <h1 className="font-bold text-4xl italic">
+              No Products to display!
+            </h1>
+          )}
+        </div>
+      ) : (
+        <div className="flex justify-center w-full h-full">
+          <Image src={"/spinner.gif"} alt="products" width={200} height={300} />
+        </div>
+      )}
     </div>
   );
 }

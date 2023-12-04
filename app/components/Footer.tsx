@@ -1,10 +1,18 @@
-import React from "react";
+"use client";
+import React, { useContext } from "react";
+import { themeContext } from "../context/Theme";
 
 export default function Footer() {
   const date = new Date();
   const year = date.getFullYear();
-
+  const { theme } = useContext(themeContext);
   return (
-    <div className="border-t-2 p-4 w-full text-center">All rights reserved &copy;{year}</div>
+    <div
+      className={`page h-28 border-t-2 p-10 w-full text-center ${
+        theme ? "border-white" : "border-slate-500"
+      }`}
+    >
+      All rights reserved &copy;{year}|Made With ❤ By Sara
+    </div>
   );
 }

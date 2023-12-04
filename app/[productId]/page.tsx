@@ -2,19 +2,36 @@ import { options } from "@/app/api/auth/[...nextauth]/options";
 import ProductDetails from "@/app/components/ProductDetails";
 import { connectdb } from "@/database/mongodb";
 import { getProduct } from "@/lib/products/getProduct";
+import { getUserData } from "@/lib/user/getUser";
 import Product from "@/models/product";
 import { ParamsType, ProductType } from "@/types";
+import { getServerSession } from "next-auth";
 import React from "react";
 
 export default async function ProductPage({ params }: ParamsType) {
   const { productId } = params;
   await connectdb();
-  const products = await Product.find();
-  const product = products.find((p) => p._id === productId);
-
+  // const products = await Product.find();
+  const product = await Product.findOne({ _id: productId });
+  const session = await getServerSession(options);
+  const user = await getUserData(session?.user?.email ?? "");
+  const { title, category, image, description, price, newProduct, sale } =
+    product;
   return (
     <div className="page w-screen h-screen flex flex-col items-center justify-center gap-3">
-      <ProductDetails product={product} />
+      <ProductDetails
+        product={{
+          _id: product._id?.toString(),
+          title,
+          category,
+          image,
+          description,
+          price,
+          newProduct,
+          sale,
+        }}
+        user={user}
+      />
     </div>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Link from "next/link";
 import { FaCartPlus } from "react-icons/fa";
 import { ProductType, UserType } from "@/types";
@@ -9,7 +9,6 @@ import { addProduct } from "@/lib/cart/addProduct";
 
 import { redirect, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { initUser } from "./Navbar";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
@@ -21,8 +20,8 @@ export default function ProductCard({ product }: { product: ProductType }) {
       redirect("/api/auth/signin?callbackUrl=/");
     },
   });
+  const user = session?.user;
   const addProductToCart = async () => {
-    const user = session?.user;
     const p = await addProduct(user as UserType, product);
     router.refresh();
     return p;
@@ -53,11 +52,16 @@ export default function ProductCard({ product }: { product: ProductType }) {
             <div className="badge badge-secondary">NEW</div>
           ) : null}
         </h2>
-        <p className="text-xl w-20 text-slate-500">${product.price}</p>
-        <div className="absolute left-0 top-0 flex justify-between items-center w-fit p-3 bg-white z-50">
+        <p className="text-lg p-2 w-20 text-slate-500">${product.price}</p>
+        <div className="absolute left-0 top-0 flex justify-center gap-3 items-center w-fit p-3 bg-white z-50">
           <button className="w-10 cursor-pointer" onClick={addProductToCart}>
             <FaCartPlus className="font-bold text-2xl" />
           </button>
+          {product.sale && product.sale > 0 ? (
+            <p className="text-black font-semibold w-10 h-10 rounded-full p-5 bg-teal-100 flex justify-center items-center">
+              -{product.sale}%
+            </p>
+          ) : null}
         </div>
       </div>
     </div>

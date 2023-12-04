@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function BaseCollectionSection() {
@@ -13,14 +14,14 @@ export default function BaseCollectionSection() {
           className=" object-cover"
         />
 
-        <div className="p-10 flex flex-col justify-center items-start gap-2">
+        <div className="p-10 flex flex-col justify-center items-center gap-2">
           <h2 className="text-xl text-slate-500">MEN</h2>
           <h1 className="text-4xl font-semibold">
             The base collection - Ideal every day.
           </h1>
-          <button className="btn bg-black text-white rounded-none">
+          <Link href={"/men"} className="btn bg-black text-white rounded-none">
             Shop Now
-          </button>
+          </Link>
         </div>
       </div>
       <div className="w-1/2 px-3 h-full">

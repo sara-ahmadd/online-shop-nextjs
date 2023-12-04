@@ -50,7 +50,7 @@ export default function DashBoard() {
         ) : null}
       </div>
       <div className="overflow-x-auto min-h-screen">
-        <table className=" table-xs sm:table-lg">
+        <table className=" table-xs sm:table-lg h-96 overflow-y-scroll">
           <thead>
             <tr className={theme ? "text-white" : "text-black"}>
               <th></th>
@@ -62,12 +62,16 @@ export default function DashBoard() {
             </tr>
           </thead>
           <tbody>
-            {products?.length > 0 ? (
+            {products &&
+            products.length > 0 &&
+            products.every((p) => p.title !== "") ? (
               products.map((p, index) => {
                 return <Row key={p._id} product={p} order={index} />;
               })
             ) : (
-              <h1>No Products to display</h1>
+              <tr>
+                <td colSpan={6}>No Products to display</td>
+              </tr>
             )}
           </tbody>
         </table>

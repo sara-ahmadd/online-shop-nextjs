@@ -11,7 +11,7 @@ export const GET = async (req: Request) => {
     if (searchParams.has("id")) {
       const id = searchParams.get("id");
       const data = await Product.findById(id);
-      return NextResponse.json( data );
+      return NextResponse.json(data);
     } else if (searchParams.has("search")) {
       const txt = searchParams.get("search") as string;
       const data: ProductType[] = await Product.find();
@@ -37,7 +37,8 @@ export const POST = async (req: Request, res: Response) => {
   await connectdb();
   try {
     const reqBody = await req.json();
-    const { title, category, price, description, image, newProduct } = reqBody;
+    const { title, category, price, description, image, newProduct, sale } =
+      reqBody;
     const data = await Product.create({
       title,
       category,
@@ -45,10 +46,11 @@ export const POST = async (req: Request, res: Response) => {
       description,
       image,
       newProduct,
+      sale,
     });
     return NextResponse.json(data);
   } catch (error) {
-    throw new Error("Error in creating new product.");
+    throw new Error(`Error in creating new product==> ${error}`);
   }
 };
 export const PUT = async (req: Request, res: Response) => {

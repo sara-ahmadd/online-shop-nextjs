@@ -3,24 +3,22 @@ import { updateUserData } from "../user/updateUser";
 import { getUserData } from "../user/getUser";
 
 export const addProduct = async (user: UserType, product: ProductType) => {
-  const res = await getUserData(user.email ?? "");
-  const matchedProduct = res.cart?.find((p) => p._id === product._id);
-  if (matchedProduct !== undefined) {
-    const newCart = res.cart?.filter((p) => p._id !== product._id);
-    const finalCart = [
-      ...(newCart ?? []),
-      {
-        ...matchedProduct,
-        quantity: (matchedProduct.quantity as number) + 1,
-      },
-    ];
-    const u = { ...res, cart: finalCart };
-    const updatedUser = await updateUserData(u);
-    return updatedUser;
+  const userFromDB = await getUserData(user.email ?? "");
+  const cart = userFromDB.cart;
+  let cartCopy = cart?.slice();
+  const matchedProduct = cart?.find((p) => p._id === product._id);
+  if (matchedProduct) {
+    const productIndex = cart?.findIndex(
+      (p) => p._id === product._id
+    ) as number;
+
+    cartCopy?.splice(productIndex, 1, {
+      ...product,
+      quantity: (matchedProduct.quantity as number) + 1,
+    });
+    await updateUserData({ ...userFromDB, cart: cartCopy });
   } else {
-    const updatedCart = [...(res.cart ?? []), { ...product, quantity: 1 }];
-    const u = { ...res, cart: updatedCart };
-    const updatedUser = await updateUserData(u);
-    return updatedUser;
+    cartCopy?.push({ ...product, quantity: 1 });
+    await updateUserData({ ...userFromDB, cart: cartCopy });
   }
 };
