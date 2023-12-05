@@ -7,7 +7,7 @@ export const addProduct = async (user: UserType, product: ProductType) => {
   const cart = userFromDB.cart;
   let cartCopy = cart?.slice();
   const matchedProduct = cart?.find((p) => p._id === product._id);
-  if (matchedProduct) {
+  if (matchedProduct !== undefined) {
     const productIndex = cart?.findIndex(
       (p) => p._id === product._id
     ) as number;

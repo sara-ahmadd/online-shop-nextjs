@@ -14,17 +14,13 @@ export default function ProductCard({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
 
   const router = useRouter();
-  const { data: session } = useSession({
-    required: true,
-    onUnauthenticated() {
-      redirect("/api/auth/signin?callbackUrl=/");
-    },
-  });
-  const user = session?.user;
+  const { data: session } = useSession();
   const addProductToCart = async () => {
-    const p = await addProduct(user as UserType, product);
-    router.refresh();
-    return p;
+    if (session?.user?.email) {
+      const p = await addProduct(session.user as UserType, product);
+      router.refresh();
+      return p;
+    }
   };
   return (
     <div

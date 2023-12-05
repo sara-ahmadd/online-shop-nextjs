@@ -13,9 +13,11 @@ import FilterCategories from "@/app/components/FilterCategories";
 import Searchbar from "@/app/components/Searchbar";
 import { getAllProducts } from "@/lib/products/getAllProducts";
 import useGetSearchedProducts from "@/hooks/useGetSearchedProducts";
+import { useRouter } from "next/navigation";
 
 export default function DashBoard() {
   const { theme } = useContext(themeContext);
+  const router = useRouter();
   const [displayForm, setDisplayForm] = useState(false);
   const { products, handleProducts, search, handleSearch } =
     useGetSearchedProducts();
@@ -30,6 +32,7 @@ export default function DashBoard() {
   };
   const addProduct = async (form: ProductType): Promise<ProductType> => {
     const data = await addNewProduct(form);
+    router.refresh();
     return data;
   };
   return (

@@ -4,7 +4,7 @@ import React from "react";
 
 export default function SpringSection() {
   return (
-    <div className="page spring_section flex justify-between items-center w-full h-full">
+    <div className="page spring_section flex  flex-wrap justify-between items-center w-full mb-24 lg:mb-0">
       <Image
         src={"/women.jpg"}
         alt="img"
@@ -13,7 +13,7 @@ export default function SpringSection() {
         className="z-50"
       />
 
-      <div className=" p-10 flex flex-col justify-center items-start gap-2 z-50">
+      <div className=" p-3 lg:p-10 flex flex-col justify-start lg:justify-center items-start gap-2 z-50 w-full md:w-1/2">
         <h2 className="text-xl text-slate-500">WOMEN</h2>
         <h1 className="text-4xl font-semibold">Spring Summer Collection</h1>
         <p className="text-lg text-slate-500">

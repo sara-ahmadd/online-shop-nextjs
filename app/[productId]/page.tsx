@@ -6,14 +6,17 @@ import { getUserData } from "@/lib/user/getUser";
 import Product from "@/models/product";
 import { ParamsType, ProductType } from "@/types";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default async function ProductPage({ params }: ParamsType) {
   const { productId } = params;
   await connectdb();
-  // const products = await Product.find();
   const product = await Product.findOne({ _id: productId });
   const session = await getServerSession(options);
+  if (!session) {
+    redirect(`/api/auth/signin?callbackUrl=/${productId}`);
+  }
   const user = await getUserData(session?.user?.email ?? "");
   const { title, category, image, description, price, newProduct, sale } =
     product;

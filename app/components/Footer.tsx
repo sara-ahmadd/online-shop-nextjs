@@ -8,7 +8,7 @@ export default function Footer() {
   const { theme } = useContext(themeContext);
   return (
     <div
-      className={`page h-28 border-t-2 p-10 w-full text-center ${
+      className={`page h-28 border-t-2 p-10 pb-20 sm:pb-10 w-full text-center ${
         theme ? "border-white" : "border-slate-500"
       }`}
     >

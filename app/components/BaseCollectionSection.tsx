@@ -5,7 +5,7 @@ import React from "react";
 export default function BaseCollectionSection() {
   return (
     <div className="flex justify-between items-center w-11/12 h-11/12">
-      <div className="flex flex-col w-1/2 h-full  justify-center items-center">
+      <div className="flex flex-col w-full sm:w-1/2 h-full  justify-center items-center">
         <Image
           src={"/base-coll.jpg"}
           alt="img"
@@ -24,7 +24,7 @@ export default function BaseCollectionSection() {
           </Link>
         </div>
       </div>
-      <div className="w-1/2 px-3 h-full">
+      <div className="w-1/2 px-3 h-full hidden md:block">
         <Image src={"/base-coll.jpg"} alt="img" width={600} height={700} />
       </div>
     </div>

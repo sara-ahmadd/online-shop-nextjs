@@ -10,9 +10,9 @@ const SpecificProducts = ({
   products: ProductType[];
 }) => {
   return (
-    <div className="page flex flex-col justify-center items-start gap-5">
+    <div className="h-full w-full flex flex-col justify-center items-start gap-5">
       <h1 className="text-5xl font-semibold p-5">{title}</h1>
-      <div className="page flex justify-center flex-wrap  p-20 gap-2 items-start w-full h-full ">
+      <div className="flex justify-center flex-wrap p-5 gap-2 items-start">
         {products?.length > 0 ? (
           products.map((p) => {
             const {

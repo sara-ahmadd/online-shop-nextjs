@@ -11,6 +11,7 @@ import { getUserData } from "@/lib/user/getUser";
 import { redirect } from "next/navigation";
 import Footer from "./components/Footer";
 import SubscribeSection from "./components/SubscribeSection";
+import { signOut } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Online Shop",
@@ -22,8 +23,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(options);
-  const userFromDb = await getUserData(session?.user?.email ?? "");
+ 
 
   return (
     <html lang="en">
@@ -31,9 +31,8 @@ export default async function RootLayout({
         <ThemeProvider>
           <SearchContextProvider>
             <body>
-              <Navbar user={userFromDb} />
+              <Navbar  />
               <Parent>{children}</Parent>
-              
             </body>
           </SearchContextProvider>
         </ThemeProvider>

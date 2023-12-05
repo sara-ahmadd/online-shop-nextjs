@@ -4,14 +4,14 @@ import React, { useState } from "react";
 export default function SubscribeSection() {
   const [val, setVal] = useState("");
   return (
-    <div className="page h-96 my-5 w-full flex flex-col justify-center items-center gap-2  bg-teal-300/40">
+    <div className="px-7 h-96 my-5 w-full flex flex-col justify-center items-center gap-2  bg-teal-300">
       <h2 className="text-4xl font-bold">
         Subscribe To Get Offers In Your Inbox
       </h2>
       <p className="text-lg text-slate-500">
         Lorem ipsum dolor sit amet, adipiscing elit sed do eiusmod condimentum
       </p>
-      <form className="flex w-1/3 jusitfy-center items-center gap-4">
+      <form className="mx-auto flex w-fit jusitfy-center items-center flex-wrap gap-4">
         <input
           type="text"
           value={val}

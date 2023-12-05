@@ -22,9 +22,10 @@ export default function FeedbackForm() {
         msg: message,
         img: session?.user?.image ?? "/vercel.svg",
         email: session?.user?.email,
+      }).then(() => {
+        router.refresh();
       });
     }
-    router.push("/profile");
   };
 
   const { theme } = useContext(themeContext);
