@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import Footer from "./components/Footer";
 import SubscribeSection from "./components/SubscribeSection";
 import { signOut } from "next-auth/react";
+import ToastProvider from "./context/ToastProvider";
 
 export const metadata: Metadata = {
   title: "Online Shop",
@@ -23,16 +24,17 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
- 
-
   return (
     <html lang="en">
       <AuthProvider>
         <ThemeProvider>
           <SearchContextProvider>
             <body>
-              <Navbar  />
-              <Parent>{children}</Parent>
+              <Navbar />
+              <Parent>
+                <ToastProvider />
+                {children}
+              </Parent>
             </body>
           </SearchContextProvider>
         </ThemeProvider>

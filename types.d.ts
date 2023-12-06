@@ -21,7 +21,7 @@ export type ParamsType = {
 export type UserType = {
   _id?: string;
   email: string;
-  image: string;
+  image?: string;
   name?: string;
   password?: string;
   cart?: ProductType[];

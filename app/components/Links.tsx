@@ -81,7 +81,7 @@ const Links = ({ user }: { user: UserType }) => {
               theme ? "text-black" : undefined
             }`}
           >
-            {user && user.image.length > 0 ? (
+            {user && user?.image && user?.image?.length > 0 ? (
               <label tabIndex={0} className="m-1 cursor-pointer">
                 <Image
                   src={user?.image ?? "/spinner.gif"}

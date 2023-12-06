@@ -32,7 +32,6 @@ export default function DashBoard() {
   };
   const addProduct = async (form: ProductType): Promise<ProductType> => {
     const data = await addNewProduct(form);
-    router.refresh();
     return data;
   };
   return (

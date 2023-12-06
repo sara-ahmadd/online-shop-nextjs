@@ -3,7 +3,8 @@ import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
 import { themeContext } from "../context/Theme";
 import { UserType } from "@/types";
 import { addUser } from "@/lib/user/addNewUser";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 const initUser: UserType = {
   email: "",
   password: "",
@@ -14,13 +15,16 @@ const initUser: UserType = {
 
 export default function SignUP() {
   const { theme } = useContext(themeContext);
-  const router = useRouter();
+  // const router = useRouter();
   const [form, setForm] = useState(initUser);
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    await addUser(form);
+    await addUser(form)
+      .then(() => {
+        toast.success("User has been registered");
+      })
+      .catch((err) => toast.error(`Somthing went wrong: ${err}`));
     setForm(initUser);
-    router.push("/api/auth/signin");
   };
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({

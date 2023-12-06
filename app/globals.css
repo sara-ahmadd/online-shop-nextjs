@@ -216,7 +216,7 @@ html {
   -moz-transition: all 2s linear;
   -ms-transition: all 2s linear;
   -o-transition: all 2s linear;
-  z-index: 20;
+  z-index: 10;
 }
 .img:hover::after,
 .card-flash:hover::after {
@@ -264,4 +264,13 @@ hr {
   height: 2px;
   background: #888787;
   width: 100%;
+}
+.small-container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.container-box {
+  width: 100%;
+  position: relative;
 }

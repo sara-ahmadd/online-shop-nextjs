@@ -1,12 +1,23 @@
 "use client";
-import React from "react";
+import React, { ReactElement } from "react";
 import ProductCard from "./ProductCard";
 import FilterCategories from "./FilterCategories";
 import Searchbar from "./Searchbar";
 import useGetSearchedProducts from "@/hooks/useGetSearchedProducts";
 import SpecialHeading from "./SpecialHeading";
 import Image from "next/image";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import {
+  A11y,
+  EffectFade,
+  Navigation,
+  Pagination,
+  Scrollbar,
+} from "swiper/modules";
 export default function ProductsList({
   text_1,
   text_2,
@@ -28,39 +39,31 @@ export default function ProductsList({
       {products &&
       products.length > 0 &&
       products.every((p) => p.title !== "") ? (
-        <div className="flex justify-center flex-wrap  pl-3 gap-2 items-center w-full h-full ">
-          {products?.length > 0 ? (
-            products.map((p) => {
-              const {
-                title,
-                category,
-                image,
-                description,
-                price,
-                newProduct,
-                sale,
-              } = p;
-              return (
-                <ProductCard
-                  key={p._id?.toString()}
-                  product={{
-                    _id: p._id?.toString(),
-                    title,
-                    category,
-                    image,
-                    description,
-                    price,
-                    newProduct,
-                    sale,
-                  }}
-                />
-              );
-            })
-          ) : (
-            <h1 className="font-bold text-4xl italic">
-              No Products to display!
-            </h1>
-          )}
+        <div className="container-box p-0" id="container-box">
+          <div className="small-container p-0">
+            <Swiper
+              modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade]}
+              slidesPerView={3}
+              spaceBetween={5}
+              navigation
+            >
+              {products?.map((item): ReactElement => {
+                return (
+                  <SwiperSlide
+                    key={`${item._id}`}
+                    className="w-full flex justify-center h-max items-center pt-10 px-10"
+                  >
+                    <ProductCard
+                      product={{
+                        ...item,
+                        _id: item._id,
+                      }}
+                    />
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          </div>
         </div>
       ) : (
         <div className="flex justify-center w-full h-full">

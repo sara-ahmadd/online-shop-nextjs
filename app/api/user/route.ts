@@ -1,6 +1,7 @@
 import { connectdb } from "@/database/mongodb";
 import User from "@/models/user";
 import { UserType } from "@/types";
+import { genSalt, hash } from "bcrypt-ts";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
@@ -26,16 +27,25 @@ export async function POST(req: Request) {
   try {
     const reqBody = await req.json();
     const { name, email, password, image, cart } = reqBody;
+    if (!email || !name || !password) {
+      return new NextResponse("Missing fields.", { status: 400 });
+    }
+    const exist = await User.findOne({ email: email });
+    if (exist) {
+      throw new Error("User already exists.");
+    }
+    const salt = await genSalt(10);
+    const hashedPassword = await hash(password, salt);
     const data: UserType = await User.create({
       name,
-      password,
+      password: hashedPassword,
       image,
       email,
       cart,
     });
     return NextResponse.json(data);
   } catch (error) {
-    throw new Error(`Error in adding the user data to db ==> ${error}`);
+    throw new Error(`Error in adding the user data to db. ==> ${error}`);
   }
 }
 export async function PATCH(req: Request) {
@@ -43,6 +53,11 @@ export async function PATCH(req: Request) {
   try {
     const reqBody = await req.json();
     const { _id, name, email, password, image, cart } = reqBody;
+    if (!email || !name || !password) {
+      return new NextResponse("Missing fields to update the user.", {
+        status: 400,
+      });
+    }
     const data = (await User.findByIdAndUpdate(_id, {
       name,
       password,
@@ -60,9 +75,7 @@ export async function DELETE(req: Request) {
   await connectdb();
   try {
     const { searchParams } = new URL(req.url);
-    const data: UserType | null = await User.findByIdAndDelete(
-      searchParams.get("id")
-    );
+    const data = await User.findByIdAndDelete(searchParams.get("id"));
     return NextResponse.json(data);
   } catch (error) {
     throw new Error(`Error in getting the user data from db ==> ${error}`);

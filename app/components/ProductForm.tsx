@@ -26,9 +26,10 @@ export default function AddProductForm({
   };
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    functionality(form);
-    setForm(emptyForm);
-    router.refresh();
+    functionality(form).then(() => {
+      setForm(emptyForm);
+      router.refresh();
+    });
   };
   const { theme } = useContext(themeContext);
 

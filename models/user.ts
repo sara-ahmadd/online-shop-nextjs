@@ -1,8 +1,8 @@
-import mongoose, { model, models } from "mongoose";
+import mongoose from "mongoose";
 
-const UserSchema = mongoose.Schema;
+const { Schema } = mongoose;
 
-const UserModel = new UserSchema({
+const userSchema = new Schema({
   email: {
     type: String,
     required: true,
@@ -21,5 +21,7 @@ const UserModel = new UserSchema({
     type: Array,
   },
 });
-const User = models.User || model("User", UserModel);
+
+// Check if the 'User' model already exists, if not, create it
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 export default User;

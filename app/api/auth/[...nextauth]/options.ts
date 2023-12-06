@@ -1,11 +1,10 @@
 import { connectdb } from "@/database/mongodb";
-import { getUserData } from "@/lib/user/getUser";
 import User from "@/models/user";
 import { ProductType, UserType } from "@/types";
-import { NextAuthOptions, Profile } from "next-auth";
+import { compare } from "bcrypt-ts";
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { redirect } from "next/navigation";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -21,27 +20,32 @@ export const options: NextAuthOptions = {
         email: { label: "Email", type: "email", placeholder: "Your Email" },
       },
       async authorize(credentials) {
+        if (!credentials?.email || !credentials.password) {
+          throw new Error("email or password is missing.");
+        }
         await connectdb();
-        const data: UserType = (await User.findOne({
+        const data = (await User.findOne({
           email: credentials?.email,
         })) as UserType;
+
+        if (!data || !data.password) {
+          throw new Error("User doesnot exist.");
+        }
+        const passwordMatch = await compare(
+          credentials.password,
+          data.password
+        );
+        if (!passwordMatch) {
+          throw new Error("password is not correct.");
+        }
         const user = {
           id: data._id as string,
           name: data.name as string,
           image: data.image as string,
           email: data.email as string,
-          password: data.password as string,
           cart: data.cart as ProductType[],
         };
-        if (
-          user.name !== credentials?.username ||
-          user.password !== credentials?.password ||
-          user.email !== credentials.email
-        ) {
-          return null;
-        } else {
-          return user;
-        }
+        return user;
       },
     }),
     GoogleProvider({
@@ -49,26 +53,49 @@ export const options: NextAuthOptions = {
       clientSecret: process.env.CLIENT_SECRET_GOOGLE as string,
     }),
   ],
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    async signIn({ profile }) {
-      try {
+    async jwt({ token, user, account, profile, isNewUser }: any) {
+      await connectdb();
+      const userCheck = (await User.findOne({
+        email: token.email,
+      })) as UserType;
+
+      if (userCheck) {
+        return {
+          ...token,
+          image: userCheck?.image,
+          name: userCheck?.name,
+          email: userCheck.email,
+          _id: userCheck._id,
+        };
+      } else {
         await connectdb();
-        const userFromDB: UserType = (await User.findOne({
-          email: profile?.email,
-        })) as UserType;
-        if (!userFromDB) {
-          await User.create({
-            name: profile?.name,
-            image: profile?.image ?? "/spinner.gif",
-            email: profile?.email,
-            cart: [] as ProductType[],
-          });
-        }
-        return true;
-      } catch (error) {
-        console.log(error);
-        return false;
+        const name = token.name;
+        const email = token.email;
+        const image = token.picture;
+        const userCreated = await User.create({
+          name,
+          email,
+          image,
+        });
+        return userCreated;
       }
+    },
+    async session({ session, token, user }) {
+      session.user = token;
+      console.log(
+        "session_sessino",
+        session,
+        "session_token",
+        token,
+        "session_user",
+        user
+      );
+
+      return session;
     },
   },
   pages: {
