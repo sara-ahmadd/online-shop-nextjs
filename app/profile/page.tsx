@@ -12,10 +12,10 @@ export default async function ProfilePage() {
   if (!session) {
     redirect("/api/auth/signin?callbackUrl=/profile");
   }
-
+  const { email, image, name } = session.user as UserType;
   return (
     <div className="flex flex-col justify-center items-center p-5 mx-auto gap-4">
-      <Profile user={session?.user as UserType} />
+      <Profile user={{ email, image, name }} />
       <Feedback />
     </div>
   );

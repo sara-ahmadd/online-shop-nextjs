@@ -43,8 +43,8 @@ export default function ProductsList({
           <div className="small-container p-0">
             <Swiper
               modules={[Navigation, Pagination, Scrollbar, A11y, EffectFade]}
-              slidesPerView={3}
-              spaceBetween={5}
+              slidesPerView={4}
+              spaceBetween={3}
               navigation
             >
               {products?.map((item): ReactElement => {

@@ -1,17 +1,16 @@
 "use client";
-import React, { useState, FormEvent, useContext, ChangeEvent } from "react";
+import React, {
+  useState,
+  FormEvent,
+  useContext,
+  ChangeEvent,
+  useEffect,
+} from "react";
 import { themeContext } from "../context/Theme";
 import { ProductType } from "@/types";
 import { useRouter } from "next/navigation";
-const emptyForm = {
-  title: "",
-  category: "",
-  image: "",
-  price: 0,
-  description: "",
-  newProduct: false,
-  sale: null,
-};
+import { RefreshContext } from "../context/RefreshContext";
+
 export default function AddProductForm({
   initialForm,
   functionality,
@@ -19,19 +18,19 @@ export default function AddProductForm({
   initialForm: ProductType;
   functionality: (f: ProductType) => Promise<ProductType>;
 }) {
-  const router = useRouter();
   const [form, setForm] = useState(initialForm);
+  const { theme } = useContext(themeContext);
+  const { handleRefresh } = useContext(RefreshContext);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.id]: e.target.value });
   };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     functionality(form).then(() => {
-      setForm(emptyForm);
-      router.refresh();
+      handleRefresh();
     });
   };
-  const { theme } = useContext(themeContext);
 
   return (
     <form

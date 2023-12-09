@@ -5,6 +5,7 @@ import { compare } from "bcrypt-ts";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
+import type { GoogleProfile } from "next-auth/providers/google";
 
 export const options: NextAuthOptions = {
   providers: [
@@ -21,7 +22,7 @@ export const options: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) {
-          throw new Error("email or password is missing.");
+          throw new Error("email or password is missing or incorrect.");
         }
         await connectdb();
         const data = (await User.findOne({
@@ -49,6 +50,48 @@ export const options: NextAuthOptions = {
       },
     }),
     GoogleProvider({
+      // async profile(profile: GoogleProfile) {
+      //   console.log({
+      //     ...profile,
+      //     id: profile.aud,
+      //     image: profile.picture,
+      //   });
+
+      //   await connectdb();
+      //   const userCheck = (await User.findOne({
+      //     email: profile.email,
+      //   })) as UserType;
+
+      //   if (userCheck) {
+      //     return {
+      //       ...profile,
+      //       image: userCheck?.image,
+      //       name: userCheck?.name,
+      //       email: userCheck.email,
+      //       role: userCheck.role,
+      //       _id: userCheck._id,
+      //       id: profile.aud,
+      //     };
+      //   } else {
+      //     await connectdb();
+      //     const name = profile.name;
+      //     const email = profile.email;
+      //     const image = profile.picture;
+      //     const role = profile.role ?? "user";
+      //     await User.create({
+      //       name,
+      //       email,
+      //       image,
+      //       role,
+      //     });
+      //   }
+      //   return {
+      //     ...profile,
+      //     id: profile.aud,
+      //     image: profile.picture,
+      //     role: profile.role ?? "user",
+      //   };
+      // },
       clientId: process.env.CLIENT_ID_GOOGLE as string,
       clientSecret: process.env.CLIENT_SECRET_GOOGLE as string,
     }),
@@ -57,7 +100,7 @@ export const options: NextAuthOptions = {
     strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user, account, profile, isNewUser }: any) {
+    async jwt({ token }: any) {
       await connectdb();
       const userCheck = (await User.findOne({
         email: token.email,
@@ -69,6 +112,7 @@ export const options: NextAuthOptions = {
           image: userCheck?.image,
           name: userCheck?.name,
           email: userCheck.email,
+          role: userCheck.role ?? "user",
           _id: userCheck._id,
         };
       } else {
@@ -76,29 +120,24 @@ export const options: NextAuthOptions = {
         const name = token.name;
         const email = token.email;
         const image = token.picture;
+        const role = token.role ?? "user";
         const userCreated = await User.create({
           name,
           email,
           image,
+          role,
         });
         return userCreated;
       }
     },
     async session({ session, token, user }) {
       session.user = token;
-      console.log(
-        "session_sessino",
-        session,
-        "session_token",
-        token,
-        "session_user",
-        user
-      );
-
+      console.log("session_sessino", session.user);
       return session;
     },
   },
   pages: {
     newUser: "/signup",
+    signIn: "/signin",
   },
 };

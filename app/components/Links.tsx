@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { themeContext } from "../context/Theme";
 import { usePathname } from "next/navigation";
 import { ProductType, UserType } from "@/types";
@@ -8,14 +8,12 @@ import { BsShopWindow } from "react-icons/bs";
 import ThemeBtn from "./ThemeBtn";
 import { ImHome } from "react-icons/im";
 import { RxDashboard } from "react-icons/rx";
-import { GrContact } from "react-icons/gr";
 import Image from "next/image";
 import { GiShoppingCart } from "react-icons/gi";
 
 const Links = ({ user }: { user: UserType }) => {
   const { theme } = useContext(themeContext);
   const path = usePathname();
-
   const getPieces = (c: ProductType[]) => {
     let sum = 0;
     c?.map((p) => {
@@ -23,6 +21,7 @@ const Links = ({ user }: { user: UserType }) => {
     });
     return sum;
   };
+
   return (
     <nav
       className={`flex md:flex-col items-center justify-between md:justify-start gap-5 md:gap-14 p-2 min-w-full md:min-w-max h-14 md:h-4/5 bottom-3 md:top-10 left-1/2 md:left-1 -translate-x-1/2 fixed bg-teal-200 rounded-md ml-0 md:ml-6  z-50  px-5 md:px-1  text-2xl`}
@@ -64,17 +63,7 @@ const Links = ({ user }: { user: UserType }) => {
             </Link>
           </li>
         )}
-        <li>
-          <Link
-            href={"/contact"}
-            className={
-              path === "/contact" ? "text-teal-500 font-bold" : undefined
-            }
-            title="Contact"
-          >
-            <GrContact />
-          </Link>
-        </li>
+
         <li>
           <div
             className={`dropdown dropdown-top md:dropdown-bottom dropdown-end md:dropdown-right  ${
@@ -107,12 +96,20 @@ const Links = ({ user }: { user: UserType }) => {
                 </>
               </ul>
             ) : (
-              <Link
-                href={"/api/auth/signin"}
-                className={`btn bg-black text-white rounded-none w-14`}
-              >
-                Signin
-              </Link>
+              <div className="flex flex-col w-14">
+                <Link
+                  href={"/api/auth/signin"}
+                  className={`btn bg-black text-white rounded-none w-full`}
+                >
+                  SignIn
+                </Link>
+                <Link
+                  href={"/signup"}
+                  className={`btn bg-black text-white rounded-none w-full`}
+                >
+                  SignUp
+                </Link>
+              </div>
             )}
           </div>
         </li>

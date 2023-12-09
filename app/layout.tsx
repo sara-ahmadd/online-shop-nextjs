@@ -3,16 +3,9 @@ import "./globals.css";
 import ThemeProvider from "./context/Theme";
 import Navbar from "./components/Navbar";
 import Parent from "./components/Parent";
-import SearchContextProvider from "./context/Search";
 import AuthProvider from "./context/AuthProvider";
-import { getServerSession } from "next-auth";
-import { options } from "./api/auth/[...nextauth]/options";
-import { getUserData } from "@/lib/user/getUser";
-import { redirect } from "next/navigation";
-import Footer from "./components/Footer";
-import SubscribeSection from "./components/SubscribeSection";
-import { signOut } from "next-auth/react";
 import ToastProvider from "./context/ToastProvider";
+import RefreshContextProvider from "./context/RefreshContext";
 
 export const metadata: Metadata = {
   title: "Online Shop",
@@ -28,7 +21,7 @@ export default async function RootLayout({
     <html lang="en">
       <AuthProvider>
         <ThemeProvider>
-          <SearchContextProvider>
+          <RefreshContextProvider>
             <body>
               <Navbar />
               <Parent>
@@ -36,7 +29,7 @@ export default async function RootLayout({
                 {children}
               </Parent>
             </body>
-          </SearchContextProvider>
+          </RefreshContextProvider>
         </ThemeProvider>
       </AuthProvider>
     </html>

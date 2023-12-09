@@ -6,16 +6,24 @@ import { UserType } from "@/types";
 import { deleteUserData } from "@/lib/user/deleteUser";
 import Btn from "@/app/components/Btn";
 import { signOut } from "next-auth/react";
+import Swal from "sweetalert2";
 
 export default function Profile({ user }: { user: UserType }) {
   const router = useRouter();
   const deleteAccount = async () => {
     if (user) {
-      await deleteUserData(user._id as string);
-      signOut();
-      router.push("/");
+      await Swal.fire("Confirm Deleting Your Account", "", "question").then(
+        async (res) => {
+          if (res.isConfirmed) {
+            await deleteUserData(user._id as string);
+            signOut();
+            router.push("/");
+          }
+        }
+      );
     }
   };
+
   return (
     <div className="flex flex-col justify-center items-center p-5 mx-auto gap-4">
       {user ? (

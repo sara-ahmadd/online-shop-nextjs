@@ -1,13 +1,16 @@
 "use client";
-import React, { useState, FormEvent, useContext } from "react";
+import React, { useState, FormEvent, useContext, useEffect } from "react";
 import { themeContext } from "../context/Theme";
 import { redirect, useRouter } from "next/navigation";
 import { addNewFeedback } from "@/lib/feedbacks/addNewFeedback";
 import { useSession } from "next-auth/react";
+import toast from "react-hot-toast";
+import { RefreshContext } from "../context/RefreshContext";
 
 export default function FeedbackForm() {
-  const router = useRouter();
+  const { handleRefresh } = useContext(RefreshContext);
   const [message, setMsg] = useState("");
+  const { theme } = useContext(themeContext);
   const { data: session } = useSession({
     required: true,
     onUnauthenticated() {
@@ -22,13 +25,12 @@ export default function FeedbackForm() {
         msg: message,
         img: session?.user?.image ?? "/vercel.svg",
         email: session?.user?.email,
-      }).then(() => {
-        router.refresh();
       });
+      toast.success("Thanks for your feedback❤");
+      handleRefresh();
+      setMsg("");
     }
   };
-
-  const { theme } = useContext(themeContext);
 
   return (
     <form

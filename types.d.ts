@@ -24,5 +24,6 @@ export type UserType = {
   image?: string;
   name?: string;
   password?: string;
+  role?: string;
   cart?: ProductType[];
 };

@@ -1,21 +1,25 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { ProductType, UserType } from "@/types";
 import Image from "next/image";
 import { deleteProductFromCart } from "@/lib/cart/deleteItemFromCart";
 import { emptyCart } from "@/lib/cart/emptyCart";
 import Btn from "@/app/components/Btn";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import PiecesCounter from "./PiecesCounter";
 import Swal from "sweetalert2";
+import { calcSale } from "@/lib/calcSale";
+import { themeContext } from "@/app/context/Theme";
 
 const Cart = ({ user, cart }: { user: UserType; cart: ProductType[] }) => {
   const router = useRouter();
-
+  const { theme } = useContext(themeContext);
   const totalCost = () => {
     let sum = 0;
     cart?.map((p) => {
-      sum += p.price * (p.quantity as number);
+      const calculatedPrice =
+        p.sale && p.sale > 0 ? calcSale(p.sale, p.price) : p.price;
+      sum += calculatedPrice * (p.quantity as number);
     });
     return sum;
   };
@@ -33,16 +37,28 @@ const Cart = ({ user, cart }: { user: UserType; cart: ProductType[] }) => {
     });
   };
   const clearCart = async () => {
-    await emptyCart(user).then(() => {
-      router.refresh();
+    await Swal.fire(
+      "Confirm",
+      "Are you sure to clear everything in your cart?",
+      "question"
+    ).then(async (res) => {
+      if (res.isConfirmed) {
+        await emptyCart(user).then(() => {
+          router.refresh();
+        });
+      }
     });
   };
-  const confirmCart = () => {
-    Swal.fire({
-      title: "Shipping your order...",
-    }).then(async () => {
-      await emptyCart(user);
-      router.refresh();
+  const confirmCart = async () => {
+    await Swal.fire("Confirm Shipping?", "", "question").then(async (res) => {
+      if (res.isConfirmed) {
+        await Swal.fire({
+          title: "Shipping your order...",
+        }).then(async () => {
+          await emptyCart(user);
+          router.refresh();
+        });
+      }
     });
   };
   return (
@@ -63,7 +79,7 @@ const Cart = ({ user, cart }: { user: UserType; cart: ProductType[] }) => {
               </thead>
               <tbody>
                 {cart.map((i, index) => (
-                  <tr key={i._id}>
+                  <tr key={i._id} className="border-b-2 border-accent">
                     <td>{index + 1}</td>
                     <td>
                       <Image
@@ -79,7 +95,30 @@ const Cart = ({ user, cart }: { user: UserType; cart: ProductType[] }) => {
                       {i.quantity}
                       <PiecesCounter user={user} product={i} sign="+" />
                     </td>
-                    <td>${i.price}</td>
+                    <td>
+                      {(i.sale ?? 0) > 0 ? (
+                        <>
+                          <del className="text-lg p-2 w-20 text-red-700">
+                            ${i.price}
+                          </del>
+                          <p
+                            className={`text-lg p-2 w-20  ${
+                              theme ? "text-white" : "text-black"
+                            }`}
+                          >
+                            ${calcSale(i?.sale ?? 0, i.price)}
+                          </p>
+                        </>
+                      ) : (
+                        <p
+                          className={`text-lg p-2 w-20  ${
+                            theme ? "text-white" : "text-black"
+                          }`}
+                        >
+                          ${i.price}
+                        </p>
+                      )}
+                    </td>
                     <td>{i.category}</td>
                     <td>
                       <Btn

@@ -5,20 +5,17 @@ import Row from "../../components/Row";
 import AddNewForm from "../../components/ProductForm";
 import { addNewProduct } from "@/lib/products/addNewProduct";
 import { ProductType } from "@/types";
-import { initProduct } from "@/app/components/ProductDetails";
-import { SearchContext } from "@/app/context/Search";
-import { getFilteredProducts } from "@/lib/products/getFilteredProducts";
 import { IoClose } from "react-icons/io5";
 import FilterCategories from "@/app/components/FilterCategories";
 import Searchbar from "@/app/components/Searchbar";
-import { getAllProducts } from "@/lib/products/getAllProducts";
 import useGetSearchedProducts from "@/hooks/useGetSearchedProducts";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { RefreshContext } from "@/app/context/RefreshContext";
 
 export default function DashBoard() {
   const { theme } = useContext(themeContext);
-  const router = useRouter();
   const [displayForm, setDisplayForm] = useState(false);
+
   const { products, handleProducts, search, handleSearch } =
     useGetSearchedProducts();
 
@@ -30,12 +27,14 @@ export default function DashBoard() {
     description: "",
     newProduct: false,
   };
+
   const addProduct = async (form: ProductType): Promise<ProductType> => {
     const data = await addNewProduct(form);
+    setDisplayForm(false);
     return data;
   };
   return (
-    <div className="flex flex-col justify-center items-center gap-8">
+    <div className="flex flex-col justify-center items-center gap-8 h-full">
       <div className="w-full flex flex-col justify-center items-start gap-4 p-4">
         <Searchbar search={search} handleSearch={handleSearch} />
         <FilterCategories handleProducts={handleProducts} />
@@ -52,7 +51,7 @@ export default function DashBoard() {
         ) : null}
       </div>
       <div className="overflow-x-auto min-h-screen">
-        <table className=" table-xs sm:table-lg h-96 overflow-y-scroll">
+        <table className=" table-xs sm:table-lg h-full">
           <thead>
             <tr className={theme ? "text-white" : "text-black"}>
               <th></th>
@@ -72,7 +71,14 @@ export default function DashBoard() {
               })
             ) : (
               <tr>
-                <td colSpan={6}>No Products to display</td>
+                <td colSpan={6}>
+                  <Image
+                    src={"/spinner.gif"}
+                    alt="spinner"
+                    width={300}
+                    height={300}
+                  />
+                </td>
               </tr>
             )}
           </tbody>

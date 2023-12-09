@@ -2,6 +2,7 @@
 import React, { useState, ChangeEvent, FormEvent, useContext } from "react";
 import { FaSearchengin } from "react-icons/fa6";
 import { themeContext } from "../context/Theme";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
 export default function Searchbar({
   search,
@@ -12,9 +13,8 @@ export default function Searchbar({
 }) {
   const { theme } = useContext(themeContext);
 
-  const handleChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     handleSearch(e.target.value);
-    console.log(search);
   };
 
   return (
@@ -30,7 +30,14 @@ export default function Searchbar({
         type="text"
         className={`input input-accent p-3 `}
       />
-      <FaSearchengin className="text-3xl absolute right-3 top-2" />
+      {search.length === 0 && (
+        <FaSearchengin className="text-3xl absolute right-3 top-2" />
+      )}
+      {search.length > 0 && (
+        <button onClick={() => handleSearch("")}>
+          <IoCloseCircleSharp className="text-3xl absolute right-5 top-2" />
+        </button>
+      )}
     </form>
   );
 }

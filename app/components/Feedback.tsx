@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import FeedbackForm from "./FeedbackForm";
 import { FaUser } from "react-icons/fa";
 import { getAllFeedbacks } from "@/lib/feedbacks/getFeedbacks";
 import { FeedType } from "@/types";
 import { useRouter } from "next/navigation";
+import { RefreshContext } from "../context/RefreshContext";
 
 const initFeed: FeedType = {
   msg: "",
@@ -14,14 +15,13 @@ const initFeed: FeedType = {
 };
 export default function Feedback() {
   const [feed, setFeed] = useState([initFeed]);
+  const { refresh } = useContext(RefreshContext);
   useEffect(() => {
-    const getFeedbacks = async () => {
+    (async () => {
       const res: FeedType[] = await getAllFeedbacks();
       setFeed(res.reverse());
-      return res;
-    };
-    getFeedbacks();
-  }, []);
+    })();
+  }, [refresh]);
   return (
     <div className="w-full sm:w-4/5 text-center px-2">
       <>
@@ -30,7 +30,7 @@ export default function Feedback() {
             <h1 className="font-bold text-2xl py-10">
               Our Clients Thoughts About Us
             </h1>
-            <div className="h-80 overflow-scroll">
+            <div className="h-80 overflow-y-scroll">
               {feed.map((f) => {
                 return (
                   <div

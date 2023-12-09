@@ -10,6 +10,7 @@ import PiecesCounter from "../cart/components/PiecesCounter";
 import { initUser } from "./Navbar";
 import { getUserData } from "@/lib/user/getUser";
 import { addProduct } from "@/lib/cart/addProduct";
+import { calcSale } from "@/lib/calcSale";
 
 export const initProduct: ProductType = {
   _id: "",
@@ -57,7 +58,7 @@ export default function ProductDetails({
         Back
       </button>
 
-      <div className="py-20 md:py-5 w-full h-11/12 flex flex-wrap md:flex-nowrap justify-center items-start gap-5">
+      <div className="py-20 md:py-5 w-full h-11/12 flex justify-center items-start gap-5">
         <div className="w-full sm:w-fit">
           <Image
             src={product?.image ?? "/spinner.gif"}
@@ -68,22 +69,51 @@ export default function ProductDetails({
         </div>
         <div
           className={`w-full sm:w-1/2 flex flex-col justify-start items-start gap-2 border-l-2 ${
-            theme ? "border-slate-50" : "border-slate-800"
+            theme ? "border-slate-50 text-white" : "border-slate-800 text-black"
           } h-full px-5`}
         >
-          <h2 className="text-xl text-slate-500">{product?.category}</h2>
+          <h2 className={`text-xl ${theme ? "text-white" : "text-black"}`}>
+            {product?.category}
+          </h2>
           <hr />
           <h1 className="text-2xl font-semibold">{product?.title}</h1>
           <hr />
-          <h1 className="text-2xl font-semibold">
-            ${product?.price}
-            <span className="text-sm text-slate-500">&Free Shipping</span>
-          </h1>
+          <div className="text-2xl font-semibold flex flex-col justify-center items-start">
+            {(product.sale ?? 0) > 0 ? (
+              <>
+                <del className="text-lg p-2 w-20 text-red-700">
+                  ${product.price}
+                </del>
+                <p
+                  className={`text-lg p-2 w-20  ${
+                    theme ? "text-white" : "text-black"
+                  }`}
+                >
+                  ${calcSale(product?.sale ?? 0, product.price)}
+                </p>
+              </>
+            ) : (
+              <p
+                className={`text-lg p-2 w-20 text-slate-500 ${
+                  theme ? "text-white" : "text-black"
+                }`}
+              >
+                ${product.price}
+              </p>
+            )}
+            <span className={`text-sm ${theme ? "text-white" : "text-black"}`}>
+              &Free Shipping
+            </span>
+          </div>
           <hr />
           <h1 className="text-2xl font-semibold">-{product.sale} %</h1>
           <hr />
 
-          <div className="flex w-full justify-start items-center gap-4">
+          <div
+            className={`flex w-full justify-start items-center gap-4 ${
+              theme ? "text-white" : "text-black"
+            }`}
+          >
             <div className="w-1/2 flex justify-center items-center gap-3">
               <PiecesCounter user={user} product={product} sign="-" />
               <>{currentProductinUserCart ?? 0}</>

@@ -26,7 +26,7 @@ export async function POST(req: Request) {
   await connectdb();
   try {
     const reqBody = await req.json();
-    const { name, email, password, image, cart } = reqBody;
+    const { name, email, password, image, cart, role } = reqBody;
     if (!email || !name || !password) {
       return new NextResponse("Missing fields.", { status: 400 });
     }
@@ -42,6 +42,7 @@ export async function POST(req: Request) {
       image,
       email,
       cart,
+      role,
     });
     return NextResponse.json(data);
   } catch (error) {

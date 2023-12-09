@@ -7,8 +7,9 @@ import { ProductType, UserType } from "@/types";
 import { themeContext } from "../context/Theme";
 import { addProduct } from "@/lib/cart/addProduct";
 
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { calcSale } from "@/lib/calcSale";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);
@@ -22,6 +23,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
       return p;
     }
   };
+
   return (
     <div
       className={`relative flex flex-col w-80 h-96 justify-start items-center bg-slate-50
@@ -48,7 +50,19 @@ export default function ProductCard({ product }: { product: ProductType }) {
             <div className="badge badge-secondary">NEW</div>
           ) : null}
         </h2>
-        <p className="text-lg p-2 w-20 text-slate-500">${product.price}</p>
+
+        {(product.sale ?? 0) > 0 ? (
+          <>
+            <del className="text-lg p-2 w-20 text-red-700">
+              ${product.price}
+            </del>
+            <p className="text-lg p-2 w-20 text-slate-700">
+              ${calcSale(product?.sale ?? 0, product.price)}
+            </p>
+          </>
+        ) : (
+          <p className="text-lg p-2 w-20 text-slate-500">${product.price}</p>
+        )}
         <div className="absolute left-0 top-0 flex justify-center gap-3 items-center w-fit p-3 bg-white z-50">
           <button className="w-10 cursor-pointer" onClick={addProductToCart}>
             <FaCartPlus className="font-bold text-2xl" />
