@@ -1,15 +1,9 @@
 "use client";
-import React, {
-  useState,
-  FormEvent,
-  useContext,
-  ChangeEvent,
-  useEffect,
-} from "react";
+import React, { useContext, ChangeEvent } from "react";
 import { themeContext } from "../context/Theme";
 import { ProductType } from "@/types";
-import { useRouter } from "next/navigation";
 import { RefreshContext } from "../context/RefreshContext";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 export default function AddProductForm({
   initialForm,
@@ -18,23 +12,21 @@ export default function AddProductForm({
   initialForm: ProductType;
   functionality: (f: ProductType) => Promise<ProductType>;
 }) {
-  const [form, setForm] = useState(initialForm);
+  const { register, handleSubmit, setValue } = useForm<ProductType>({
+    defaultValues: initialForm,
+  });
+
   const { theme } = useContext(themeContext);
   const { handleRefresh } = useContext(RefreshContext);
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.id]: e.target.value });
-  };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    functionality(form).then(() => {
+  const processSubmit: SubmitHandler<ProductType> = (data) => {
+    functionality(data).then(() => {
       handleRefresh();
     });
   };
-
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(processSubmit)}
       className="w-full flex flex-col justify-center items-start p-5"
     >
       <label htmlFor="title">Title</label>
@@ -42,67 +34,56 @@ export default function AddProductForm({
         type="text"
         id="title"
         required
-        name="title"
-        value={form.title}
         placeholder="Products Name"
         className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
-        onChange={handleChange}
+        {...register("title")}
       />
       <label htmlFor="image">Image</label>
       <input
         type="text"
         id="image"
         required
-        name="image"
-        value={form.image}
         placeholder="Products Image"
         className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
-        onChange={handleChange}
+        {...register("image")}
       />
       <label htmlFor="category">Category</label>
       <input
         type="text"
         id="category"
         required
-        name="category"
-        value={form.category}
         placeholder="Products Category"
         className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
-        onChange={handleChange}
+        {...register("category")}
       />
       <label htmlFor="sale">Have sale?</label>
       <input
         type="number"
         id="sale"
         required
-        name="sale"
-        value={form.sale ?? 0}
         placeholder="Products Category"
         className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
-        onChange={handleChange}
+        {...register("sale")}
       />
       <label htmlFor="newProduct">New</label>
       <input
         type="checkbox"
         id="newProduct"
-        name="newProduct"
         className={`${theme && "text-black"} p-4 border rounded w-fit mb-3`}
-        onChange={(e) =>
-          e.target.checked
-            ? setForm({ ...form, newProduct: true })
-            : setForm({ ...form, newProduct: false })
-        }
+        {...register("newProduct", {
+          onChange: (e: ChangeEvent<HTMLInputElement>) => {
+            setValue("newProduct", e.target.checked ? true : false);
+          },
+        })}
       />
       <label htmlFor="price">Price</label>
       <input
         type="number"
         id="price"
         required
-        name="price"
-        value={form.price}
         placeholder="Products Price"
         className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
-        onChange={handleChange}
+        {...register("price")}
       />
       <label htmlFor="description" className="p-0">
         Description
@@ -110,10 +91,8 @@ export default function AddProductForm({
       <textarea
         placeholder="Description"
         required
-        id="description"
-        value={form.description}
         className={`${theme && "text-black"} border rounded p-4 w-full`}
-        onChange={(e) => setForm({ ...form, [e.target.id]: e.target.value })}
+        {...register("description")}
       />
       <button className="btn btn-outline btn-accent mt-3">Submit</button>
     </form>

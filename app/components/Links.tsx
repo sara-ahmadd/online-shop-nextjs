@@ -30,7 +30,7 @@ const Links = ({ user }: { user: UserType }) => {
         <Link
           href={"/"}
           title="Home"
-          className={` text-2xl ${
+          className={` text-4xl ${
             path === "/" ? "text-teal-500 font-bold" : undefined
           }`}
         >
@@ -50,19 +50,18 @@ const Links = ({ user }: { user: UserType }) => {
             <ImHome />
           </Link>
         </li>
-        {user && user.email && (
-          <li>
-            <Link
-              href={"/dashboard"}
-              className={
-                path === "/dashboard" ? "text-teal-500 font-bold" : undefined
-              }
-              title="Dashboard"
-            >
-              <RxDashboard />
-            </Link>
-          </li>
-        )}
+
+        <li>
+          <Link
+            href={"/dashboard"}
+            className={
+              path === "/dashboard" ? "text-teal-500 font-bold" : undefined
+            }
+            title="Dashboard"
+          >
+            <RxDashboard />
+          </Link>
+        </li>
 
         <li>
           <div
@@ -70,6 +69,9 @@ const Links = ({ user }: { user: UserType }) => {
               theme ? "text-black" : undefined
             }`}
           >
+            <span className="text-sm font-semibold">
+              {user?.role ?? "<<Role>>"}
+            </span>
             {user && user?.image && user?.image?.length > 0 ? (
               <label tabIndex={0} className="m-1 cursor-pointer">
                 <Image

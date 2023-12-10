@@ -6,7 +6,6 @@ import { addNewFeedback } from "@/lib/feedbacks/addNewFeedback";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import { RefreshContext } from "../context/RefreshContext";
-
 export default function FeedbackForm() {
   const { handleRefresh } = useContext(RefreshContext);
   const [message, setMsg] = useState("");

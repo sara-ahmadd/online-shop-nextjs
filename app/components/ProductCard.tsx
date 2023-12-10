@@ -16,6 +16,7 @@ export default function ProductCard({ product }: { product: ProductType }) {
 
   const router = useRouter();
   const { data: session } = useSession();
+
   const addProductToCart = async () => {
     if (session?.user?.email) {
       const p = await addProduct(session.user as UserType, product);

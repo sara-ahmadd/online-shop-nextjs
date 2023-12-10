@@ -1,11 +1,12 @@
 "use client";
-import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
+import React, { useContext } from "react";
 import { themeContext } from "../context/Theme";
 import { UserType } from "@/types";
 import { addUser } from "@/lib/user/addNewUser";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { SubmitHandler, useForm } from "react-hook-form";
 const initUser: UserType = {
   email: "",
   password: "",
@@ -15,36 +16,41 @@ const initUser: UserType = {
 };
 
 export default function SignUP() {
+  const { register, handleSubmit } = useForm<UserType>({
+    defaultValues: initUser,
+  });
   const { theme } = useContext(themeContext);
   const router = useRouter();
-  const [form, setForm] = useState(initUser);
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    await addUser(form)
+
+  const processSubmit: SubmitHandler<UserType> = async (data) => {
+    await addUser(data)
       .then(() => {
         toast.success("User has been registered");
         router.push("/signin");
       })
       .catch((err) => toast.error(`Somthing went wrong: ${err}`));
   };
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
+
   return (
     <div
       className={` flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8`}
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2
+          className={`${
+            theme ? "text-white" : "text-black"
+          } mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900`}
+        >
           Register
         </h2>
       </div>
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={handleSubmit}>
+      <div
+        className={`mt-10 sm:mx-auto sm:w-full sm:max-w-sm ${
+          theme ? "text-white" : "text-black"
+        }`}
+      >
+        <form className="space-y-6" onSubmit={handleSubmit(processSubmit)}>
           <div>
             <label
               htmlFor="name"
@@ -54,12 +60,11 @@ export default function SignUP() {
             </label>
             <div className="mt-2 p-3">
               <input
-                onChange={handleChange}
+                {...register("name")}
                 id="name"
-                name="name"
-                type="name"
+                type="text"
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -72,12 +77,11 @@ export default function SignUP() {
             </label>
             <div className="mt-2 p-3">
               <input
-                onChange={handleChange}
+                {...register("email")}
                 id="email"
-                name="email"
                 type="email"
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
@@ -93,9 +97,13 @@ export default function SignUP() {
             </div>
             <div className="mt-2 p-3">
               <input
-                onChange={handleChange}
+                {...register("password", {
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters.",
+                  },
+                })}
                 id="password"
-                name="password"
                 type="password"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
@@ -113,9 +121,8 @@ export default function SignUP() {
             </div>
             <div className="mt-2 p-3">
               <input
-                onChange={handleChange}
+                {...register("image")}
                 id="image"
-                name="image"
                 type="text"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
@@ -135,7 +142,7 @@ export default function SignUP() {
         <p className="mt-10 text-center text-sm text-gray-500">
           Already a member?
           <Link
-            href="/signup"
+            href="/signin"
             className="font-semibold leading-6 text-teal-600 hover:text-teal-500"
           >
             Login

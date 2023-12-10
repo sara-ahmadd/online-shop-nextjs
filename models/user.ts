@@ -1,3 +1,4 @@
+import { USER_ROLE } from "@/types";
 import mongoose from "mongoose";
 
 const { Schema } = mongoose;
@@ -19,6 +20,10 @@ const userSchema = new Schema({
   },
   cart: {
     type: Array,
+  },
+  role: {
+    type: String,
+    default: "user",
   },
 });
 

@@ -26,8 +26,8 @@ export async function POST(req: Request) {
   await connectdb();
   try {
     const reqBody = await req.json();
-    const { name, email, password, image, cart, role } = reqBody;
-    if (!email || !name || !password) {
+    const { name, email, password, image, cart } = reqBody;
+    if (!email || !name) {
       return new NextResponse("Missing fields.", { status: 400 });
     }
     const exist = await User.findOne({ email: email });
@@ -36,13 +36,14 @@ export async function POST(req: Request) {
     }
     const salt = await genSalt(10);
     const hashedPassword = await hash(password, salt);
+    const userRole = email === "test@test.com" ? "admin" : "user";
     const data: UserType = await User.create({
       name,
       password: hashedPassword,
       image,
+      role: userRole,
       email,
       cart,
-      role,
     });
     return NextResponse.json(data);
   } catch (error) {
@@ -53,15 +54,14 @@ export async function PATCH(req: Request) {
   await connectdb();
   try {
     const reqBody = await req.json();
-    const { _id, name, email, password, image, cart } = reqBody;
-    if (!email || !name || !password) {
+    const { _id, name, email, image, cart } = reqBody;
+    if (!email || !name) {
       return new NextResponse("Missing fields to update the user.", {
         status: 400,
       });
     }
     const data = (await User.findByIdAndUpdate(_id, {
       name,
-      password,
       image,
       email,
       cart,

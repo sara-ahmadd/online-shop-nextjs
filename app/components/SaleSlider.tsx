@@ -1,26 +1,16 @@
 "use client";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
-import ProductCard from "./ProductCard";
-import FilterCategories from "./FilterCategories";
-import Searchbar from "./Searchbar";
-import useGetSearchedProducts from "@/hooks/useGetSearchedProducts";
+import React, { ReactElement, useEffect, useState } from "react";
 import SpecialHeading from "./SpecialHeading";
-import Image from "next/image";
+import Searchbar from "./Searchbar";
+import FilterCategories from "./FilterCategories";
+import useGetSearchedProducts from "@/hooks/useGetSearchedProducts";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
 import { Navigation } from "swiper/modules";
-export default function ProductsList({
-  text_1,
-  text_2,
-}: {
-  text_1: string;
-  text_2: string;
-}) {
-  const { products, handleProducts, search, handleSearch } =
-    useGetSearchedProducts();
+import ProductCard from "./ProductCard";
+import Image from "next/image";
+import { ProductType } from "@/types";
+
+const SaleSlider = ({ products }: { products: ProductType[] }) => {
   const initWidth = window.innerWidth;
   const [width, setWidth] = useState(initWidth);
   useEffect(() => {
@@ -32,14 +22,9 @@ export default function ProductsList({
       window.removeEventListener("resize", handleWindowWidth);
     };
   }, []);
+
   return (
     <div className="w-full flex flex-col justify-center gap-4 items-start lg:px-2">
-      <SpecialHeading text_1={text_1} text_2={text_2} />
-      <div className=" w-full flex flex-col justify-center items-start gap-4 p-4">
-        <Searchbar search={search} handleSearch={handleSearch} />
-        <FilterCategories handleProducts={handleProducts} />
-      </div>
-
       {products &&
       products.length > 0 &&
       products.every((p) => p.title !== "") ? (
@@ -79,4 +64,6 @@ export default function ProductsList({
       )}
     </div>
   );
-}
+};
+
+export default SaleSlider;

@@ -7,17 +7,29 @@ import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
 import toast from "react-hot-toast";
 import { RefreshContext } from "../context/RefreshContext";
 import { useRouter } from "next/navigation";
+import { UserType } from "@/types";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 function LoginPage() {
   const { theme } = useContext(themeContext);
-  const [form, setForm] = useState({ name: "", password: "", email: "" });
+  const { register, handleSubmit } = useForm<{
+    name: string;
+    password: string;
+    email: string;
+  }>({
+    defaultValues: { name: "", password: "", email: "" },
+  });
+  // const [form, setForm] = useState({ name: "", password: "", email: "" });
   const router = useRouter();
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
+  const processSubmit: SubmitHandler<{
+    name: string;
+    password: string;
+    email: string;
+  }> = (data) => {
     signIn("credentials", {
-      email: form.email,
-      password: form.password,
-      name: form.name,
+      email: data.email,
+      password: data.password,
+      name: data.name,
       redirect: false,
     })
       .then((res) => {
@@ -32,12 +44,6 @@ function LoginPage() {
       .catch((error) => {
         toast.error(`Error on signin with email & password => ${error}`);
       });
-  };
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
   };
   return (
     <div
@@ -60,7 +66,7 @@ function LoginPage() {
       >
         <form
           className={`space-y-6 ${theme ? "text-white" : "text-black"}`}
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit(processSubmit)}
         >
           <div>
             <label
@@ -73,10 +79,9 @@ function LoginPage() {
             </label>
             <div className="mt-2">
               <input
-                onChange={handleChange}
+                {...register("name")}
                 id="name"
-                name="name"
-                type="name"
+                type="text"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
               />
@@ -93,9 +98,8 @@ function LoginPage() {
             </label>
             <div className={`mt-2 ${theme ? "text-white" : "text-black"}`}>
               <input
-                onChange={handleChange}
+                {...register("email")}
                 id="email"
-                name="email"
                 type="email"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
@@ -114,9 +118,13 @@ function LoginPage() {
             </div>
             <div className="mt-2">
               <input
-                onChange={handleChange}
+                {...register("password", {
+                  minLength: {
+                    value: 8,
+                    message: "Password must be at least 8 characters.",
+                  },
+                })}
                 id="password"
-                name="password"
                 type="password"
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
@@ -135,7 +143,7 @@ function LoginPage() {
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?
+          Not a member?{" "}
           <Link
             href="/signup"
             className="font-semibold leading-6 text-teal-600 hover:text-teal-500"
@@ -144,7 +152,9 @@ function LoginPage() {
           </Link>
         </p>
       </div>
-      <h1 className="w-full font-bold text-xl text-center">-----OR------</h1>
+      <h1 className="w-full font-bold text-xl text-center p-2">
+        -------OR--------
+      </h1>
       <div className="mx-auto w-1/5">
         <button
           onClick={() => signIn("google")}

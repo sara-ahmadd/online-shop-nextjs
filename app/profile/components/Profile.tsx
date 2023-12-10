@@ -15,9 +15,8 @@ export default function Profile({ user }: { user: UserType }) {
       await Swal.fire("Confirm Deleting Your Account", "", "question").then(
         async (res) => {
           if (res.isConfirmed) {
-            await deleteUserData(user._id as string);
-            signOut();
-            router.push("/");
+            await signOut();
+            await deleteUserData(user._id as string).then(() => {});
           }
         }
       );
