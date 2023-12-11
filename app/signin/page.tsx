@@ -14,6 +14,7 @@ function LoginPage() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<{
     name: string;
@@ -37,6 +38,7 @@ function LoginPage() {
       .then((res) => {
         if (res?.ok) {
           toast.success("User logged in successfully!");
+          reset();
           router.refresh();
         }
         if (res?.error) {
@@ -130,19 +132,19 @@ function LoginPage() {
               }`}
             >
               <input
-                {...register("password", {
-                  minLength: {
-                    value: 5,
-                    message: "Password must be at least 8 characters.",
-                  },
-                })}
+                {...register("password")}
                 id="password"
                 type={showPassw ? "text" : "password"}
                 required
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 px-3"
               />
+              {errors.password?.message && (
+                <p className="text-sm font-bold text-red-500">
+                  {errors.password.message}
+                </p>
+              )}
               <button
-                className="btn bg-teal-600 text-center px-2 text-black font-bold"
+                className="btn bg-teal-600 text-center px-2 text-white font-bold"
                 type="button"
                 onClick={(e) => {
                   setShowPassw(!showPassw);
@@ -151,6 +153,12 @@ function LoginPage() {
                 {showPassw ? <PiEyeLight /> : <PiEyeSlash />}
               </button>
             </div>
+            <Link
+              href="/forgotpassword"
+              className="font-semibold leading-6 text-teal-600 hover:text-teal-500"
+            >
+              Forgot your password?
+            </Link>
           </div>
 
           <div>
@@ -163,8 +171,12 @@ function LoginPage() {
           </div>
         </form>
 
-        <p className="mt-10 text-center text-sm text-gray-500">
-          Not a member?{" "}
+        <p
+          className={`mt-10 text-center text-sm text-gray-500 ${
+            theme ? "text-white" : "text-black"
+          }`}
+        >
+          Not a member?
           <Link
             href="/signup"
             className="font-semibold leading-6 text-teal-600 hover:text-teal-500"

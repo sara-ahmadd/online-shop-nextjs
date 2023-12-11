@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { options } from "../api/auth/[...nextauth]/options";
 import { getUserData } from "@/lib/user/getUser";
 import { serialize } from "v8";
+import Link from "next/link";
 
 export default async function DashboardPage() {
   const session = await getServerSession(options);
@@ -15,9 +16,14 @@ export default async function DashboardPage() {
         {user && user.role === "admin" ? (
           <DashBoard />
         ) : (
-          <h1 className="fornt-bold text-3xl h-96">
-            This page can only be accessed by an admin.
-          </h1>
+          <div className=" h-96 flex flex-col justify-start items-center gap-5">
+            <h1 className="font-bold text-3xl">
+              This page can only be accessed by an admin.
+            </h1>
+            <Link href={"/"} className="btn btn-accent">
+              Home
+            </Link>
+          </div>
         )}
       </div>
     </div>

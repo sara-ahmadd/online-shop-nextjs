@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useContext, useState } from "react";
 import { useRouter } from "next/navigation";
 import { UserType } from "@/types";
 import { deleteUserData } from "@/lib/user/deleteUser";
@@ -10,8 +10,10 @@ import Swal from "sweetalert2";
 import { getUserData } from "@/lib/user/getUser";
 import { updateUserData } from "@/lib/user/updateUser";
 import { FaRegSave, FaUserEdit } from "react-icons/fa";
+import { themeContext } from "@/app/context/Theme";
 
 export default function Profile({ user }: { user: UserType }) {
+  const { theme } = useContext(themeContext);
   const router = useRouter();
   const deleteAccount = async () => {
     if (user) {
@@ -84,7 +86,9 @@ export default function Profile({ user }: { user: UserType }) {
           </div>
           {showImgField ? (
             <input
-              className="input px-3 border-2 border-black rounded-md w-96 h-10"
+              className={`nput px-3 border-2 border-black rounded-md w-96 h-10 ${
+                theme ? "text-black" : undefined
+              }`}
               type="text"
               placeholder="Your new image URL..."
               value={profileImg}
@@ -114,7 +118,9 @@ export default function Profile({ user }: { user: UserType }) {
           </div>
           {showNameField ? (
             <input
-              className="input px-3 border-2 border-black rounded-md w-96 h-10"
+              className={`nput px-3 border-2 border-black rounded-md w-96 h-10 ${
+                theme ? "text-black" : undefined
+              }`}
               type="text"
               placeholder="Your new username..."
               value={profileName}

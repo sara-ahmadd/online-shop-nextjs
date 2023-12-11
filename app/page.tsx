@@ -4,7 +4,6 @@ import ProductsList from "./components/ProductsList";
 import BaseCollectionSection from "./components/BaseCollectionSection";
 import NewCollectionSection from "./components/NewCollectionSection";
 import SpringSection from "./components/SpringSection";
-import SubscribeSection from "./components/SubscribeSection";
 import SaleProducts from "./components/SaleProducts";
 import ImagesSection from "./components/ImagesSection";
 

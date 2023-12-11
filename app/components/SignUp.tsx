@@ -43,7 +43,7 @@ export default function SignUP() {
     >
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2
-          className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900  ${
+          className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight  ${
             theme ? "text-white" : "text-black"
           }`}
         >
@@ -51,16 +51,14 @@ export default function SignUP() {
         </h2>
       </div>
 
-      <div
-        className={`mt-10 sm:mx-auto sm:w-full sm:max-w-sm ${
-          theme ? "text-white" : "text-black"
-        }`}
-      >
+      <div className={`mt-10 sm:mx-auto sm:w-full sm:max-w-sm `}>
         <form className="space-y-6" onSubmit={handleSubmit(processSubmit)}>
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className={`block text-sm font-medium leading-6 text-gray-900 ${
+                theme ? "text-white" : "text-black"
+              }`}
             >
               User Name
             </label>
@@ -70,14 +68,18 @@ export default function SignUP() {
                 id="name"
                 type="text"
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+                className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 ${
+                  theme ? "text-white" : "text-black"
+                }`}
               />
             </div>
           </div>
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
+              className={`block text-sm font-medium leading-6 text-gray-900 ${
+                theme ? "text-white" : "text-black"
+              }`}
             >
               Email address
             </label>
@@ -126,7 +128,7 @@ export default function SignUP() {
                 </p>
               )}
               <button
-                className="btn bg-teal-600 text-center px-2 text-black font-bold"
+                className="btn bg-teal-600 text-center px-2 text-white font-bold"
                 type="button"
                 onClick={(e) => {
                   setShowPassw(!showPassw);
@@ -140,7 +142,9 @@ export default function SignUP() {
             <div className="flex items-center justify-between">
               <label
                 htmlFor="image"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className={`block text-sm font-medium leading-6 text-gray-900 ${
+                  theme ? "text-white" : "text-black"
+                }`}
               >
                 Profile Image URL
               </label>

@@ -54,7 +54,7 @@ export async function PATCH(req: Request) {
   await connectdb();
   try {
     const reqBody = await req.json();
-    const { _id, name, email, image, cart } = reqBody;
+    const { _id, name, email, image, cart, password } = reqBody;
     if (!email || !name) {
       return new NextResponse("Missing fields to update the user.", {
         status: 400,
@@ -65,6 +65,7 @@ export async function PATCH(req: Request) {
       image,
       email,
       cart,
+      password,
     })) as UserType;
     return NextResponse.json(data);
   } catch (error) {

@@ -45,22 +45,26 @@ export default function ProductCard({ product }: { product: ProductType }) {
         <h1 className=" text-lg text-slate-500 p-0">
           {product.category ?? ""}
         </h1>
-        <h2 className="flex justify-between items-center w-full">
-          <span className="text-2xl font-bold p-0">{product.title}</span>
+        <div className="flex justify-between items-center w-full">
+          <p className="text-md font-semibold h-12">
+            {product.title.length > 15
+              ? `${product.title.substring(0, 12)}...`
+              : product.title}
+          </p>
           {product.newProduct ? (
             <div className="badge badge-secondary">NEW</div>
           ) : null}
-        </h2>
+        </div>
 
         {(product.sale ?? 0) > 0 ? (
-          <>
+          <div className="w-full flex justify-start items-center gap-3">
             <del className="text-lg p-2 w-20 text-red-700">
               ${product.price}
             </del>
             <p className="text-lg p-2 w-20 text-slate-700">
               ${calcSale(product?.sale ?? 0, product.price)}
             </p>
-          </>
+          </div>
         ) : (
           <p className="text-lg p-2 w-20 text-slate-500">${product.price}</p>
         )}
