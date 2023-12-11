@@ -1,6 +1,9 @@
 import { FeedType } from "@/types";
-
-const url = "http://localhost:3000/api/feedbacks";
+const baseUrl =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_HOST
+    : process.env.PROD_HOST;
+const url = `${baseUrl}/api/feedbacks`;
 export const addNewFeedback = async (
   inputData: FeedType
 ): Promise<FeedType> => {

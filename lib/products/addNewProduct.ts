@@ -1,6 +1,9 @@
 import { ProductType } from "@/types";
-
-const url = "http://localhost:3000/api/products";
+const baseUrl =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_HOST
+    : process.env.PROD_HOST;
+const url = `${baseUrl}/api/products`;
 export const addNewProduct = async (
   inputData: ProductType
 ): Promise<ProductType> => {

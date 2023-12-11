@@ -1,12 +1,15 @@
 import { ProductType } from "@/types";
-
+const baseUrl =
+  process.env.NODE_ENV === "development"
+    ? process.env.DEV_HOST
+    : process.env.PROD_HOST;
 export const getFilteredProducts = async (
   search: string = ""
 ): Promise<ProductType[]> => {
   const url =
     search.length > 0
-      ? `http://localhost:3000/api/products?search=${search}`
-      : `http://localhost:3000/api/products`;
+      ? `${baseUrl}/api/products?search=${search}`
+      : `${baseUrl}/api/products`;
 
   const res = await fetch(url);
   if (!res) {
