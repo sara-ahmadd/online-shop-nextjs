@@ -91,9 +91,6 @@ export const options: NextAuthOptions = {
     },
     async session({ session, token }) {
       session.user = token;
-      console.log("session_sessino", session);
-      console.log("session_user", session.user);
-      console.log("session_token", token);
       return session;
     },
   },

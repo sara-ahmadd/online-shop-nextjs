@@ -10,6 +10,7 @@ import PiecesCounter from "./PiecesCounter";
 import Swal from "sweetalert2";
 import { calcSale } from "@/lib/calcSale";
 import { themeContext } from "@/app/context/Theme";
+import toast from "react-hot-toast";
 
 const Cart = ({ user, cart }: { user: UserType; cart: ProductType[] }) => {
   const router = useRouter();
@@ -32,9 +33,16 @@ const Cart = ({ user, cart }: { user: UserType; cart: ProductType[] }) => {
     return pieces;
   };
   const deleteProduct = async (p: ProductType, u: UserType) => {
-    await deleteProductFromCart(p, u).then(() => {
-      router.refresh();
-    });
+    await Swal.fire("Confirm", `Confirm removing ${p.title}?`, "question").then(
+      async (res) => {
+        if (res.isConfirmed) {
+          await deleteProductFromCart(p, u).then(() => {
+            router.refresh();
+            toast.success(`${p.title} is removed.`);
+          });
+        }
+      }
+    );
   };
   const clearCart = async () => {
     await Swal.fire(

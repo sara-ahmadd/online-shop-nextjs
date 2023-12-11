@@ -63,15 +63,12 @@ const Links = ({ user }: { user: UserType }) => {
           </Link>
         </li>
 
-        <li>
+        <li className="text-center">
           <div
             className={`dropdown dropdown-top md:dropdown-bottom dropdown-end md:dropdown-right  ${
               theme ? "text-black" : undefined
             }`}
           >
-            <span className="text-sm font-semibold">
-              {user?.role ?? "<<Role>>"}
-            </span>
             {user && user?.image && user?.image?.length > 0 ? (
               <label tabIndex={0} className="m-1 cursor-pointer">
                 <Image
@@ -98,16 +95,16 @@ const Links = ({ user }: { user: UserType }) => {
                 </>
               </ul>
             ) : (
-              <div className="flex flex-col w-14">
+              <div className="flex sm:flex-col w-fit">
                 <Link
-                  href={"/api/auth/signin"}
-                  className={`btn bg-black text-white rounded-none w-full`}
+                  href={"/signin"}
+                  className={`btn bg-black text-white rounded-none w-1/2 md:w-full p-1 h-fit`}
                 >
                   SignIn
                 </Link>
                 <Link
                   href={"/signup"}
-                  className={`btn bg-black text-white rounded-none w-full`}
+                  className={`btn bg-black text-white rounded-none w-1/2 md:w-full p-1 h-fit`}
                 >
                   SignUp
                 </Link>

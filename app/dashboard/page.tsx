@@ -6,8 +6,8 @@ import { getUserData } from "@/lib/user/getUser";
 import { serialize } from "v8";
 
 export default async function DashboardPage() {
-  const sesion = await getServerSession(options);
-  const user = await getUserData(sesion?.user?.email ?? "");
+  const session = await getServerSession(options);
+  const user = await getUserData(session?.user?.email ?? "");
 
   return (
     <div className=" flex flex-col items-center gap-5 relative">
@@ -15,7 +15,7 @@ export default async function DashboardPage() {
         {user && user.role === "admin" ? (
           <DashBoard />
         ) : (
-          <h1 className="fornt-bold text-3xl">
+          <h1 className="fornt-bold text-3xl h-96">
             This page can only be accessed by an admin.
           </h1>
         )}

@@ -21,9 +21,12 @@ export default function ProductsList({
 }) {
   const { products, handleProducts, search, handleSearch } =
     useGetSearchedProducts();
-  const initWidth = window.innerWidth;
-  const [width, setWidth] = useState(initWidth);
+  const [width, setWidth] = useState(1024);
   useEffect(() => {
+    (() => {
+      const initWidth = window.innerWidth;
+      setWidth(initWidth);
+    })();
     const handleWindowWidth = () => {
       setWidth(window.innerWidth);
     };

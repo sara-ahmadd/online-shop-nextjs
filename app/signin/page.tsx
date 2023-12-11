@@ -1,25 +1,27 @@
 "use client";
-import { initUser } from "@/app/components/Navbar";
+import { PiEyeLight, PiEyeSlash } from "react-icons/pi";
 import { themeContext } from "@/app/context/Theme";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import React, { ChangeEvent, FormEvent, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import toast from "react-hot-toast";
-import { RefreshContext } from "../context/RefreshContext";
 import { useRouter } from "next/navigation";
-import { UserType } from "@/types";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 function LoginPage() {
   const { theme } = useContext(themeContext);
-  const { register, handleSubmit } = useForm<{
+  const [showPassw, setShowPassw] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<{
     name: string;
     password: string;
     email: string;
   }>({
     defaultValues: { name: "", password: "", email: "" },
   });
-  // const [form, setForm] = useState({ name: "", password: "", email: "" });
   const router = useRouter();
   const processSubmit: SubmitHandler<{
     name: string;
@@ -54,7 +56,11 @@ function LoginPage() {
           theme ? "text-white" : "text-black"
         } sm:mx-auto sm:w-full sm:max-w-sm`}
       >
-        <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        <h2
+          className={`mt-10 text-center text-2xl font-bold leading-9 tracking-tight  ${
+            theme ? "text-white" : "text-black"
+          }`}
+        >
           Sign in to your account
         </h2>
       </div>
@@ -71,7 +77,7 @@ function LoginPage() {
           <div>
             <label
               htmlFor="name"
-              className={`block text-sm font-medium leading-6 text-gray-900 ${
+              className={`block text-sm font-medium leading-6  ${
                 theme ? "text-white" : "text-black"
               }`}
             >
@@ -83,7 +89,7 @@ function LoginPage() {
                 id="name"
                 type="text"
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 px-3"
               />
             </div>
           </div>
@@ -102,33 +108,48 @@ function LoginPage() {
                 id="email"
                 type="email"
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 px-3"
               />
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between">
+            <div className={`flex items-center justify-between`}>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium leading-6 text-gray-900"
+                className={`block text-sm font-medium leading-6 ${
+                  theme ? "text-white" : "text-black"
+                }`}
               >
                 Password
               </label>
             </div>
-            <div className="mt-2">
+            <div
+              className={`flex justify-center items-center gap-2 mt-2  ${
+                theme ? "text-white" : "text-black"
+              }`}
+            >
               <input
                 {...register("password", {
                   minLength: {
-                    value: 8,
+                    value: 5,
                     message: "Password must be at least 8 characters.",
                   },
                 })}
                 id="password"
-                type="password"
+                type={showPassw ? "text" : "password"}
                 required
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-teal-600 sm:text-sm sm:leading-6 px-3"
               />
+              <button
+                className="btn bg-teal-600 text-center px-2 text-black font-bold"
+                type="button"
+                onClick={(e) => {
+                  setShowPassw(!showPassw);
+                }}
+              >
+                {showPassw ? <PiEyeLight /> : <PiEyeSlash />}
+              </button>
             </div>
           </div>
 

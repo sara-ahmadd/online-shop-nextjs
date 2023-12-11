@@ -17,10 +17,32 @@ const SaleProducts = async ({
   const products: ProductType[] = await Product.find({
     sale: { $gt: 0 },
   });
+  const prods = products.map((p): ProductType => {
+    const {
+      _id,
+      category,
+      title,
+      image,
+      sale,
+      price,
+      description,
+      newProduct,
+    } = p;
+    return {
+      _id: _id?.toString(),
+      category,
+      title,
+      image,
+      sale,
+      price,
+      description,
+      newProduct,
+    };
+  });
   return (
     <div className="w-full flex flex-col justify-center items-center gap-4">
       <SpecialHeading text_1={text_1} text_2={text_2} />
-      <SaleSlider products={products} />
+      <SaleSlider products={prods} />
     </div>
   );
 };

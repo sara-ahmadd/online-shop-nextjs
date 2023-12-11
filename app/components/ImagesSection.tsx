@@ -13,7 +13,7 @@ const ImagesSection = ({ gender }: { gender: string }) => {
       />
       <Link
         href={gender === "men" ? "/men" : "/women"}
-        className="absolute w-10/12 h-14 flex justify-center items-center bottom-3 left-3 bg-slate-100/80 text-black"
+        className="absolute w-10/12 h-14 flex justify-center items-center bottom-3 left-3 bg-slate-100/80 text-black pl-3 sm:pl-1"
       >
         {gender === "men" ? "MEN" : "WOMEN"} Products
       </Link>
