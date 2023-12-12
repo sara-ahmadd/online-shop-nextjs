@@ -6,7 +6,7 @@ import React, { useContext } from "react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
 import { RefreshContext } from "../context/RefreshContext";
-import { calcSale } from "@/lib/calcSale";
+import { calcSale } from "@/lib/cart/calcSale";
 
 export default function Row({
   product,

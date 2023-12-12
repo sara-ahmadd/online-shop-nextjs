@@ -10,7 +10,7 @@ import PiecesCounter from "../cart/components/PiecesCounter";
 import { initUser } from "./Navbar";
 import { getUserData } from "@/lib/user/getUser";
 import { addProduct } from "@/lib/cart/addProduct";
-import { calcSale } from "@/lib/calcSale";
+import { calcSale } from "@/lib/cart/calcSale";
 
 export const initProduct: ProductType = {
   _id: "",

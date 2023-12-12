@@ -1,9 +1,6 @@
 import { ProductType } from "@/types";
+import { baseUrl } from "../baseURL";
 
-const baseUrl =
-  process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_DEV_HOST
-    : process.env.NEXT_PUBLIC_PROD_HOST;
 const url = `${baseUrl}/api/products`;
 export const getAllProducts = async (): Promise<ProductType[]> => {
   try {

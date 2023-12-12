@@ -10,12 +10,12 @@ import React from "react";
 
 export default async function ProductPage({ params }: ParamsType) {
   const { productId } = params;
-  await connectdb();
-  const product = await Product.findOne({ _id: productId });
   const session = await getServerSession(options);
   if (!session) {
     redirect(`/api/auth/signin?callbackUrl=/${productId}`);
   }
+  await connectdb();
+  const product = await Product.findOne({ _id: productId });
   const user = await getUserData(session?.user?.email ?? "");
   const { title, category, image, description, price, newProduct, sale } =
     product;

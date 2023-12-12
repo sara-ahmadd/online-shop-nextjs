@@ -1,8 +1,6 @@
 import { ProductType } from "@/types";
-const baseUrl =
-  process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_DEV_HOST
-    : process.env.NEXT_PUBLIC_PROD_HOST;
+import { baseUrl } from "../baseURL";
+
 export const getCategories = async (): Promise<string[]> => {
   const res = await fetch(`${baseUrl}/api/products`);
   const data: ProductType[] = await res.json();

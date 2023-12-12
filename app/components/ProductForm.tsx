@@ -4,6 +4,7 @@ import { themeContext } from "../context/Theme";
 import { ProductType } from "@/types";
 import { RefreshContext } from "../context/RefreshContext";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 export default function AddProductForm({
   initialForm,
@@ -15,13 +16,14 @@ export default function AddProductForm({
   const { register, handleSubmit, setValue } = useForm<ProductType>({
     defaultValues: initialForm,
   });
-
+  const router = useRouter();
   const { theme } = useContext(themeContext);
   const { handleRefresh } = useContext(RefreshContext);
 
   const processSubmit: SubmitHandler<ProductType> = (data) => {
     functionality(data).then(() => {
       handleRefresh();
+      router.push("/dashboard");
     });
   };
   return (
@@ -60,8 +62,7 @@ export default function AddProductForm({
       <input
         type="number"
         id="sale"
-        required
-        placeholder="Products Category"
+        placeholder="Type a number"
         className={`${theme && "text-black"} p-4 border rounded w-full mb-3`}
         {...register("sale")}
       />

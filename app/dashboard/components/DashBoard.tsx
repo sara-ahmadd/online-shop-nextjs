@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { themeContext } from "../../context/Theme";
 import Row from "../../components/Row";
 import AddNewForm from "../../components/ProductForm";
@@ -10,7 +10,6 @@ import FilterCategories from "@/app/components/FilterCategories";
 import Searchbar from "@/app/components/Searchbar";
 import useGetSearchedProducts from "@/hooks/useGetSearchedProducts";
 import Image from "next/image";
-import { RefreshContext } from "@/app/context/RefreshContext";
 
 export default function DashBoard() {
   const { theme } = useContext(themeContext);

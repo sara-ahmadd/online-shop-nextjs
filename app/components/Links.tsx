@@ -24,7 +24,7 @@ const Links = ({ user }: { user: UserType }) => {
 
   return (
     <nav
-      className={`flex md:flex-col items-center justify-between md:justify-start gap-5 md:gap-14 p-2 min-w-full md:min-w-max h-14 md:h-4/5 bottom-3 md:top-10 left-1/2 md:left-1 -translate-x-1/2 fixed bg-teal-200 rounded-md ml-0 md:ml-6  z-50  px-5 md:px-1  text-2xl`}
+      className={`flex md:flex-col items-center justify-between md:justify-start gap-3 md:gap-14 p-2 min-w-full md:min-w-max h-14 md:h-4/5 bottom-3 md:top-10 left-1/2 md:left-1 -translate-x-1/2 fixed bg-teal-200 rounded-md ml-0 md:ml-6 z-50 px-5 md:px-1 text-2xl`}
     >
       <h1 className="h-14 flex items-center">
         <Link

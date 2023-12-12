@@ -8,7 +8,7 @@ import Btn from "@/app/components/Btn";
 import { useRouter } from "next/navigation";
 import PiecesCounter from "./PiecesCounter";
 import Swal from "sweetalert2";
-import { calcSale } from "@/lib/calcSale";
+import { calcSale } from "@/lib/cart/calcSale";
 import { themeContext } from "@/app/context/Theme";
 import toast from "react-hot-toast";
 
@@ -22,7 +22,7 @@ const Cart = ({ user, cart }: { user: UserType; cart: ProductType[] }) => {
         p.sale && p.sale > 0 ? calcSale(p.sale, p.price) : p.price;
       sum += calculatedPrice * (p.quantity as number);
     });
-    return sum;
+    return sum.toFixed(2);
   };
   const totalPieces = () => {
     let pieces = 0;

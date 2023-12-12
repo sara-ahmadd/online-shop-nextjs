@@ -9,7 +9,7 @@ import { addProduct } from "@/lib/cart/addProduct";
 
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { calcSale } from "@/lib/calcSale";
+import { calcSale } from "@/lib/cart/calcSale";
 
 export default function ProductCard({ product }: { product: ProductType }) {
   const { theme } = useContext(themeContext);

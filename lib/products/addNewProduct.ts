@@ -1,8 +1,6 @@
 import { ProductType } from "@/types";
-const baseUrl =
-  process.env.NODE_ENV === "development"
-    ? process.env.NEXT_PUBLIC_DEV_HOST
-    : process.env.NEXT_PUBLIC_PROD_HOST;
+import { baseUrl } from "../baseURL";
+
 const url = `${baseUrl}/api/products`;
 export const addNewProduct = async (
   inputData: ProductType
@@ -19,6 +17,6 @@ export const addNewProduct = async (
     const data = await res.json();
     return data;
   } catch (error) {
-    throw new Error(`Error in adding new product to the url (${url}).`);
+    throw new Error(`Error in adding new product ==> (${url}).`);
   }
 };
