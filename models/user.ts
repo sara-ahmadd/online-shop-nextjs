@@ -1,4 +1,3 @@
-import { USER_ROLE } from "@/types";
 import mongoose from "mongoose";
 
 const { Schema } = mongoose;
