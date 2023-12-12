@@ -27,7 +27,3 @@ export type UserType = {
   role?: string;
   cart?: ProductType[];
 };
-export enum USER_ROLE {
-  USER,
-  ADMIN,
-}

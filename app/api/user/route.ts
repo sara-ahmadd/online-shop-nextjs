@@ -36,12 +36,11 @@ export async function POST(req: Request) {
     }
     const salt = await genSalt(10);
     const hashedPassword = await hash(password, salt);
-    const userRole = email === "test@test.com" ? "admin" : "user";
+
     const data: UserType = await User.create({
       name,
       password: hashedPassword,
       image,
-      role: userRole,
       email,
       cart,
     });
